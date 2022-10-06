@@ -9,6 +9,7 @@ interface teams {
 }
 
 const TeamsScreen: React.FC = (props) => {
+  const { navigation, route, name } = props;
   const [team1, setTeam1] = useState<teams[]>([]);
   const [team1Input, setTeam1Input] = useState("");
   const [team2, setTeam2] = useState<teams[]>([]);
@@ -89,7 +90,10 @@ const TeamsScreen: React.FC = (props) => {
         <Pressable style={teamsStyles.nextButtonContainer}>
           <Text>Randomize</Text>
         </Pressable>
-        <Pressable style={teamsStyles.nextButtonContainer}>
+        <Pressable
+          style={teamsStyles.nextButtonContainer}
+          onPress={() => navigation.navigate("cardpackSelect")}
+        >
           <Text style={teamsStyles.nextButtonText}>&rarr;</Text>
         </Pressable>
       </View>
