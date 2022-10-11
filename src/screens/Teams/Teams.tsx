@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { View, Text, Pressable, TextInput } from "react-native";
 
@@ -8,8 +9,12 @@ interface teams {
   name: string;
 }
 
-const TeamsScreen: React.FC = (props) => {
-  const { navigation, route, name } = props;
+interface Props {
+  navigation: any;
+}
+
+const TeamsScreen: React.FC<Props> = (props) => {
+  const { navigation } = props;
   const [team1, setTeam1] = useState<teams[]>([]);
   const [team1Input, setTeam1Input] = useState("");
   const [team2, setTeam2] = useState<teams[]>([]);
