@@ -4,19 +4,32 @@ import { View, Text, Pressable, TextInput } from "react-native";
 import teamsStyles from "./teams.styles";
 
 interface teams {
-  map(arg0: (teamMember: any) => JSX.Element): import("react").ReactNode;
   id: number;
   name: string;
 }
-interface teamsInput {
-  input: string;
-}
 
 const TeamsScreen: React.FC = (props) => {
-  const [team1, setTeam1] = useState<teams>();
+  const { navigation, route, name } = props;
+  const [team1, setTeam1] = useState<teams[]>([]);
   const [team1Input, setTeam1Input] = useState("");
-  const [team2, setTeam2] = useState([]);
+  const [team2, setTeam2] = useState<teams[]>([]);
   const [team2Input, setTeam2Input] = useState("");
+
+  const addTeam1Member = (inp: string) => {
+    setTeam1((prevTeamMems) => [
+      ...prevTeamMems,
+      { id: Math.random(), name: inp },
+    ]);
+    setTeam1Input("");
+  };
+
+  const addTeam2Member = (input: string) => {
+    setTeam2((prevTeamMems) => [
+      ...prevTeamMems,
+      { id: Math.random(), name: input },
+    ]);
+    setTeam2Input("");
+  };
 
   return (
     <View style={teamsStyles.teamsPageContainer}>
@@ -37,8 +50,8 @@ const TeamsScreen: React.FC = (props) => {
         </View>
         {team1
           ? team1.map((teamMember) => (
-              <View key={teamMember}>
-                <Text>{teamMember}</Text>
+              <View key={teamMember.id}>
+                <Text>{teamMember.name}</Text>
               </View>
             ))
           : ""}
@@ -48,7 +61,7 @@ const TeamsScreen: React.FC = (props) => {
             value={team1Input}
             style={teamsStyles.teamMemberTextInput}
             onChangeText={(text) => setTeam1Input(text)}
-            onSubmitEditing={() => console.log(team1Input)}
+            onSubmitEditing={() => addTeam1Member(team1Input)}
           />
         </View>
       </View>
@@ -56,18 +69,20 @@ const TeamsScreen: React.FC = (props) => {
         <View style={teamsStyles.teamHeader}>
           <Text style={teamsStyles.teamHeaderText}>Team 2</Text>
         </View>
-        {team2.map((teamMember) => (
-          <View key={teamMember}>
-            <Text>{teamMember}</Text>
-          </View>
-        ))}
+        {team2
+          ? team2.map((teamMember) => (
+              <View key={teamMember.id}>
+                <Text>{teamMember.name}</Text>
+              </View>
+            ))
+          : ""}
         <View>
           <TextInput
             placeholder="+ADD"
             value={team2Input}
             style={teamsStyles.teamMemberTextInput}
             onChangeText={(text) => setTeam2Input(text)}
-            onSubmitEditing={() => console.log(team2Input)}
+            onSubmitEditing={() => addTeam2Member(team2Input)}
           />
         </View>
       </View>
@@ -75,7 +90,10 @@ const TeamsScreen: React.FC = (props) => {
         <Pressable style={teamsStyles.nextButtonContainer}>
           <Text>Randomize</Text>
         </Pressable>
-        <Pressable style={teamsStyles.nextButtonContainer}>
+        <Pressable
+          style={teamsStyles.nextButtonContainer}
+          onPress={() => navigation.navigate("cardpackSelect")}
+        >
           <Text style={teamsStyles.nextButtonText}>&rarr;</Text>
         </Pressable>
       </View>
