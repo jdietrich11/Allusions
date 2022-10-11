@@ -84,7 +84,7 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
           <Text style={cardpackStyles.secondTurnsText}>second turns</Text>
         </View>
         <Pressable
-          onPress={() => navigation.navigate("InformationPage")}
+          onPress={() => navigation.navigate("instruction")}
           style={cardpackStyles.nextPageButton}
         >
           <Text style={cardpackStyles.nextPageButtonText}>&rarr;</Text>
