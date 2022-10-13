@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, TextInput, Image } from "react-native";
+
+import apiCall from "../../helper/APi/api";
 
 import cardpackStyles from "./cardpackSelect.styles";
 
@@ -7,18 +9,28 @@ interface Props {
   navigation: any;
 }
 
-const TempCardpacks = [
-  "Starting",
-  "history",
-  "Marvel",
-  "Actors",
-  "Theatre",
-  "Sports",
-];
+interface Cardpack {
+  id: number;
+  cardpack_name: string;
+  imageURL: string;
+}
 
 const CardpackSelectScreen: React.FC<Props> = (props) => {
   const { navigation } = props;
   const [cardCount, setCardCount] = useState(37);
+  const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
+
+  useEffect(() => {
+    const getPacks = async (data: string) => {
+      let cardpack = await apiCall(data);
+      const { cardpack_list } = await cardpack.data;
+      setCardpacks(cardpack_list);
+    };
+
+    let cardpackQuery = "cardpack_list { id cardpack_name }";
+
+    getPacks(cardpackQuery);
+  }, []);
 
   return (
     <View style={cardpackStyles.container}>
@@ -37,11 +49,16 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
           </Text>
         </View>
         <View style={cardpackStyles.avaliableCardpacks}>
-          {TempCardpacks.map((cardpack) => (
-            <View style={cardpackStyles.cardpack} key={cardpack}>
-              <Image source={"/"} style={cardpackStyles.cardpackImage} />
+          {cardpacks.map((cardpack) => (
+            <View style={cardpackStyles.cardpack} key={cardpack.id}>
+              <Image
+                source={`${cardpack.imageURL}`}
+                style={cardpackStyles.cardpackImage}
+              />
               <View style={cardpackStyles.cardpackTitleContainer}>
-                <Text style={cardpackStyles.cardpackTitle}>{cardpack}</Text>
+                <Text style={cardpackStyles.cardpackTitle}>
+                  {cardpack.cardpack_name}
+                </Text>
               </View>
             </View>
           ))}
