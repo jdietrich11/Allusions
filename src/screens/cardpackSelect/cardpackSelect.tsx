@@ -50,13 +50,11 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
       setSelectedCardpacks(
         selectedCardpacks.filter((selectedId) => selectedId !== id)
       );
-      console.log("found");
     }
     if (!selectedCardpacks.includes(id)) {
       setSelectedCardpacks([...selectedCardpacks, id]);
       console.log("not found");
     }
-    console.log(id);
   };
 
   return (
