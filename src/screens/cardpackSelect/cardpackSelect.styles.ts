@@ -175,6 +175,8 @@ const cardpackStyles = StyleSheet.create({
     fontSize: 69,
     marginTop: -47,
   },
+  cardpackCounter: {},
+  playtimeContainer: {},
 });
 
 export default cardpackStyles;
