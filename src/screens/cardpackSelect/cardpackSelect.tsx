@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  Image,
+  ScrollView,
+} from "react-native";
 
 import apiCall from "../../helper/APi/api";
 
@@ -12,7 +19,7 @@ interface Props {
 interface Cardpack {
   id: number;
   cardpack_name: string;
-  imageURL: string;
+  image_url: string;
 }
 
 const CardpackSelectScreen: React.FC<Props> = (props) => {
@@ -27,7 +34,7 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
       setCardpacks(cardpack_list);
     };
 
-    let cardpackQuery = "cardpack_list { id cardpack_name }";
+    let cardpackQuery = "cardpack_list { id cardpack_name image_url }";
 
     getPacks(cardpackQuery);
   }, []);
@@ -49,19 +56,27 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
           </Text>
         </View>
         <View style={cardpackStyles.avaliableCardpacks}>
-          {cardpacks.map((cardpack) => (
-            <View style={cardpackStyles.cardpack} key={cardpack.id}>
-              <Image
-                source={`${cardpack.imageURL}`}
-                style={cardpackStyles.cardpackImage}
-              />
-              <View style={cardpackStyles.cardpackTitleContainer}>
-                <Text style={cardpackStyles.cardpackTitle}>
-                  {cardpack.cardpack_name}
-                </Text>
+          <ScrollView
+            style={cardpackStyles.scrollView}
+            contentContainerStyle={cardpackStyles.scrollViewContent}
+          >
+            {cardpacks.map((cardpack) => (
+              <View style={cardpackStyles.cardpack} key={cardpack.id}>
+                <Image
+                  source={{ uri: cardpack.image_url }}
+                  style={cardpackStyles.cardpackImage}
+                />
+                <View style={cardpackStyles.cardpackTitleContainer}>
+                  <Text
+                    adjustsFontSizeToFit={true}
+                    style={cardpackStyles.cardpackTitle}
+                  >
+                    {cardpack.cardpack_name}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ))}
+          </ScrollView>
         </View>
       </View>
       <View style={cardpackStyles.gameLengthContainer}>

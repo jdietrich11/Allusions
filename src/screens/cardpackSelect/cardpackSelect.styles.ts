@@ -36,14 +36,23 @@ const cardpackStyles = StyleSheet.create({
   },
   avaliableCardpacks: {
     flex: 1,
+  },
+  scrollView: {
+    flexGrow: 1,
     flexDirection: "row",
     flexWrap: "wrap",
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    width: "100%",
     justifyContent: "center",
   },
   cardpack: {
     flexDirection: "column",
     width: "30%",
-    height: "45%",
+    height: "35%",
     margin: 5,
     borderWidth: 2,
     borderRadius: 8,
@@ -55,6 +64,8 @@ const cardpackStyles = StyleSheet.create({
     borderColor: "black",
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+    resizeMode: "stretch",
+    overflow: "hidden",
   },
   cardpackTitleContainer: {
     flex: 1,
@@ -62,6 +73,7 @@ const cardpackStyles = StyleSheet.create({
   },
   cardpackTitle: {
     fontSize: 24,
+    fontWeight: "bold",
   },
   gameLengthContainer: {
     height: "10%",
