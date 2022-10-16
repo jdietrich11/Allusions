@@ -58,6 +58,16 @@ const cardpackStyles = StyleSheet.create({
     borderRadius: 8,
     padding: 8,
   },
+  selectedCardpack: {
+    flexDirection: "column",
+    width: "30%",
+    height: "35%",
+    margin: 5,
+    borderWidth: 8,
+    borderRadius: 16,
+    borderColor: "blue",
+    overflow: "hidden",
+  },
   cardpackImage: {
     flex: 5,
     borderWidth: 2,
@@ -67,9 +77,19 @@ const cardpackStyles = StyleSheet.create({
     resizeMode: "stretch",
     overflow: "hidden",
   },
+  cardpackImageSelected: {
+    flex: 1,
+    resizeMode: "stretch",
+    overflow: "hidden",
+  },
   cardpackTitleContainer: {
     flex: 1,
     alignItems: "center",
+  },
+  selectedCardpackTitleContainer: {
+    flex: 0,
+    height: 0,
+    width: 0,
   },
   cardpackTitle: {
     fontSize: 24,

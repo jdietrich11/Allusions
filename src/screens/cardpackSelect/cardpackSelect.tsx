@@ -17,15 +17,21 @@ interface Props {
 }
 
 interface Cardpack {
-  id: number;
+  id: any;
   cardpack_name: string;
   image_url: string;
+}
+interface SelectedCardpacks {
+  id: number;
 }
 
 const CardpackSelectScreen: React.FC<Props> = (props) => {
   const { navigation } = props;
-  const [cardCount, setCardCount] = useState(37);
+  const [cardCount, setCardCount] = useState(60);
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
+  const [selectedCardpacks, setSelectedCardpacks] = useState<
+    SelectedCardpacks[]
+  >([]);
 
   useEffect(() => {
     const getPacks = async (data: string) => {
@@ -39,12 +45,26 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
     getPacks(cardpackQuery);
   }, []);
 
+  const changeSelected = (id: any) => {
+    if (selectedCardpacks.includes(id)) {
+      setSelectedCardpacks(
+        selectedCardpacks.filter((selectedId) => selectedId !== id)
+      );
+      console.log("found");
+    }
+    if (!selectedCardpacks.includes(id)) {
+      setSelectedCardpacks([...selectedCardpacks, id]);
+      console.log("not found");
+    }
+    console.log(id);
+  };
+
   return (
     <View style={cardpackStyles.container}>
       <View style={cardpackStyles.header}>
         <Pressable
           style={cardpackStyles.backBtn}
-          onPress={() => navigation.navigate("teamsPage")}
+          onPress={() => navigation.navigate("teams")}
         >
           <Text style={cardpackStyles.backBtnText}>&larr;</Text>
         </Pressable>
@@ -61,12 +81,30 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
             contentContainerStyle={cardpackStyles.scrollViewContent}
           >
             {cardpacks.map((cardpack) => (
-              <View style={cardpackStyles.cardpack} key={cardpack.id}>
+              <Pressable
+                style={
+                  !selectedCardpacks.includes(cardpack.id)
+                    ? cardpackStyles.cardpack
+                    : cardpackStyles.selectedCardpack
+                }
+                key={cardpack.id}
+                onPress={() => changeSelected(cardpack.id)}
+              >
                 <Image
                   source={{ uri: cardpack.image_url }}
-                  style={cardpackStyles.cardpackImage}
+                  style={
+                    !selectedCardpacks.includes(cardpack.id)
+                      ? cardpackStyles.cardpackImage
+                      : cardpackStyles.cardpackImageSelected
+                  }
                 />
-                <View style={cardpackStyles.cardpackTitleContainer}>
+                <View
+                  style={
+                    !selectedCardpacks.includes(cardpack.id)
+                      ? cardpackStyles.cardpackTitleContainer
+                      : cardpackStyles.selectedCardpackTitleContainer
+                  }
+                >
                   <Text
                     adjustsFontSizeToFit={true}
                     style={cardpackStyles.cardpackTitle}
@@ -74,7 +112,7 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
                     {cardpack.cardpack_name}
                   </Text>
                 </View>
-              </View>
+              </Pressable>
             ))}
           </ScrollView>
         </View>
