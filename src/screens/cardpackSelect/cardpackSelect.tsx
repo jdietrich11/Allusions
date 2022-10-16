@@ -140,7 +140,7 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
           </View>
           <View style={cardpackStyles.cardpackCounter}>
             <Text style={cardpackStyles.cardCounterTextFrom}>
-              {"from 3 cardpacks"}
+              {`from ${selectedCardpacks.length} cardpacks`}
             </Text>
           </View>
         </View>
