@@ -19,28 +19,30 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
-    const getDeck = async () => {
-      for (let i = 0; i < state.selectedCardpacks.length; i++) {
-        let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
-        let cards = await apiCall(cardsQuery);
-        let { card } = cards.data;
-        for (let j = 0; j < card.length; j++) {
-          await dispatch({ type: "ADD_CARD_TO_DECK", payload: card[j] });
+    if (state.roundCount === 1) {
+      const getDeck = async () => {
+        for (let i = 0; i < state.selectedCardpacks.length; i++) {
+          let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
+          let cards = await apiCall(cardsQuery);
+          let { card } = cards.data;
+          for (let j = 0; j < card.length; j++) {
+            await dispatch({ type: "ADD_CARD_TO_DECK", payload: card[j] });
+          }
         }
-      }
-    };
-    const shuffleUp = () => {
-      let newDeck = shuffle(state.deck);
-      newDeck = shuffle(state.deck);
-      dispatch({
-        type: "SHUFFLED_DECK",
-        payload: newDeck,
-      });
-    };
-    const limitDeck = () => {
-      dispatch({ type: "LIMIT_DECK" });
-    };
-    getDeck().then(shuffleUp).then(limitDeck);
+      };
+      const shuffleUp = () => {
+        let newDeck = shuffle(state.deck);
+        newDeck = shuffle(state.deck);
+        dispatch({
+          type: "SHUFFLED_DECK",
+          payload: newDeck,
+        });
+      };
+      const limitDeck = () => {
+        dispatch({ type: "LIMIT_DECK" });
+      };
+      getDeck().then(shuffleUp).then(limitDeck);
+    }
   }, []);
 
   return (

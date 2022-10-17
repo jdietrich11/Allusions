@@ -18,15 +18,13 @@ type Action =
   | { type: "DECREASE_CARD_COUNT" }
   | { type: "ADD_CARD_TO_DECK"; payload: Card[] }
   | { type: "SHUFFLED_DECK"; payload: Card[] }
-  | { type: "LIMIT_DECK" };
+  | { type: "RESHUFFLE_DECK" }
+  | { type: "LIMIT_DECK" }
+  | { type: "DRAW_CARD" }
+  | { type: "GUESSED_CORRECT" };
 
 interface ProviderProps {
   children: React.ReactNode;
-}
-
-interface teams {
-  id: number;
-  name: string;
 }
 
 // initial state
@@ -39,6 +37,7 @@ const initialState = {
   team2RoundWins: 0,
   selectedCardpacks: [],
   cardCount: 60,
+  roundCount: 1,
   round1MVP: "",
   round2MVP: "",
   round3MVP: "",
@@ -48,6 +47,7 @@ const initialState = {
   fastestRightAnswer: "",
   deck: [],
   discardPile: [],
+  activeCard: {},
 };
 
 // reducer
@@ -95,10 +95,26 @@ const globalReducer = (state: AppState, action: any) => {
         ...state,
         deck: action.payload,
       };
+    case "RESHUFFLE_DECK":
+      return {
+        ...state,
+        deck: state.discardPile,
+        discardPile: [],
+      };
     case "LIMIT_DECK":
       return {
         ...state,
         deck: state.deck.slice(0, state.cardCount),
+      };
+    case "DRAW_CARD":
+      return {
+        ...state,
+        activeCard: state.deck[Math.floor(Math.random() * state.deck.length)],
+      };
+    case "GUESSED_CORRECT":
+      return {
+        ...state,
+        discardPile: [...state.discardPile, state.activeCard],
       };
     default:
       return state;
