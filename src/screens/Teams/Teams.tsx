@@ -1,6 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, Pressable, TextInput } from "react-native";
+
+import { GlobalContext } from "../../context/globalContext";
 
 import teamsStyles from "./teams.styles";
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const TeamsScreen: React.FC<Props> = (props) => {
+  const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
   const [team1, setTeam1] = useState<teams[]>([]);
   const [team1Input, setTeam1Input] = useState("");
@@ -21,10 +23,14 @@ const TeamsScreen: React.FC<Props> = (props) => {
   const [team2Input, setTeam2Input] = useState("");
 
   const addTeam1Member = (inp: string) => {
-    setTeam1((prevTeamMems) => [
-      ...prevTeamMems,
-      { id: Math.random(), name: inp },
-    ]);
+    dispatch({
+      type: "ADD_TO_TEAM_1",
+      payload: { id: Math.random(), name: inp },
+    });
+    // setTeam1((prevTeamMems) => [
+    //   ...prevTeamMems,
+    //   { id: Math.random(), name: inp },
+    // ]);
     setTeam1Input("");
   };
 
@@ -53,8 +59,8 @@ const TeamsScreen: React.FC<Props> = (props) => {
         <View style={teamsStyles.teamHeader}>
           <Text style={teamsStyles.teamHeaderText}>Team 1</Text>
         </View>
-        {team1
-          ? team1.map((teamMember) => (
+        {state.team1
+          ? state.team1.map((teamMember) => (
               <View key={teamMember.id}>
                 <Text>{teamMember.name}</Text>
               </View>

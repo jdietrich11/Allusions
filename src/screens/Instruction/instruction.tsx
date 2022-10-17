@@ -40,6 +40,9 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
           </Pressable>
         </View>
         <View style={instructionStyles.deckContainer}>
+          <View>
+            <Text>60</Text>
+          </View>
           <Text style={instructionStyles.deckText}>deck</Text>
         </View>
       </View>
