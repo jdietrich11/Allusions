@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 type AppState = typeof initialState;
-type Action = { type: "ADD_TO_TEAM_1"; payload: { id: number; name: string } };
+type Action =
+  | { type: "ADD_TO_TEAM_1"; payload: { id: number; name: string } }
+  | { type: "ADD_TO_TEAM_2"; payload: { id: number; name: string } }
+  | { type: "SELECT_CARDPACK"; payload: number }
+  | { type: "REMOVE_CARDPACK"; payload: number }
+  | { type: "INCREASE_CARD_COUNT" }
+  | { type: "DECREASE_CARD_COUNT" };
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -38,6 +44,33 @@ const globalReducer = (state: AppState, action: any) => {
       return {
         ...state,
         team1: [...state.team1, action.payload],
+      };
+    case "ADD_TO_TEAM_2":
+      return {
+        ...state,
+        team2: [...state.team2, action.payload],
+      };
+    case "SELECT_CARDPACK":
+      return {
+        ...state,
+        selectedCardpacks: [...state.selectedCardpacks, action.payload],
+      };
+    case "REMOVE_CARDPACK":
+      return {
+        ...state,
+        selectedCardpacks: state.selectedCardpacks.filter(
+          (selectedId) => selectedId !== action.payload
+        ),
+      };
+    case "INCREASE_CARD_COUNT":
+      return {
+        ...state,
+        cardCount: state.cardCount + 1,
+      };
+    case "DECREASE_CARD_COUNT":
+      return {
+        ...state,
+        cardCount: state.cardCount - 1,
       };
     default:
       return state;

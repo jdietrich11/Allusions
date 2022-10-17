@@ -27,18 +27,14 @@ const TeamsScreen: React.FC<Props> = (props) => {
       type: "ADD_TO_TEAM_1",
       payload: { id: Math.random(), name: inp },
     });
-    // setTeam1((prevTeamMems) => [
-    //   ...prevTeamMems,
-    //   { id: Math.random(), name: inp },
-    // ]);
     setTeam1Input("");
   };
 
-  const addTeam2Member = (input: string) => {
-    setTeam2((prevTeamMems) => [
-      ...prevTeamMems,
-      { id: Math.random(), name: input },
-    ]);
+  const addTeam2Member = (inp: string) => {
+    dispatch({
+      type: "ADD_TO_TEAM_2",
+      payload: { id: Math.random(), name: inp },
+    });
     setTeam2Input("");
   };
 
@@ -80,8 +76,8 @@ const TeamsScreen: React.FC<Props> = (props) => {
         <View style={teamsStyles.teamHeader}>
           <Text style={teamsStyles.teamHeaderText}>Team 2</Text>
         </View>
-        {team2
-          ? team2.map((teamMember) => (
+        {state.team2
+          ? state.team2.map((teamMember) => (
               <View key={teamMember.id}>
                 <Text>{teamMember.name}</Text>
               </View>

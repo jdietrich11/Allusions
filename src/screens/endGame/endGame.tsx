@@ -1,10 +1,14 @@
+import { useContext } from "react";
 import React, { View, Text, Pressable } from "react-native";
+
 import { IStackScreenProps } from "../../library/StackScreenProps";
+import { GlobalContext } from "../../context/globalContext";
 
 import endGameStyles from "./endGame.styles";
 
 const EndGameScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
+  const { state, dispatch } = useContext(GlobalContext);
 
   return (
     <View style={endGameStyles.endGameContainer}>
@@ -12,15 +16,17 @@ const EndGameScreen: React.FC<IStackScreenProps> = (props) => {
         <Text style={endGameStyles.gameOverText}>Game Over</Text>
       </View>
       <View style={endGameStyles.awardsContainer}>
-        <Text style={endGameStyles.awardText}>Fastest Talker: {"AJ"}</Text>
         <Text style={endGameStyles.awardText}>
-          Best One Word Pony: {"Jill"}
+          Fastest Talker: {state.fastestTalker}
         </Text>
         <Text style={endGameStyles.awardText}>
-          Best Hand and Body Flapper: {"Johnson"}
+          Best One Word Pony: {state.bestOneWordPony}
         </Text>
         <Text style={endGameStyles.awardText}>
-          Fastest Right Answer: {"Doug"}
+          Best Hand and Body Flapper: {state.bestHandAndBodyFlapper}
+        </Text>
+        <Text style={endGameStyles.awardText}>
+          Fastest Right Answer: {state.fastestRightAnswer}
         </Text>
       </View>
       <View style={endGameStyles.buttons}>

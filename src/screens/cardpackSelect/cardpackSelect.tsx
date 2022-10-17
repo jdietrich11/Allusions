@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 
+import { GlobalContext } from "../../context/globalContext";
 import apiCall from "../../helper/APi/api";
 
 import cardpackStyles from "./cardpackSelect.styles";
@@ -21,17 +22,11 @@ interface Cardpack {
   cardpack_name: string;
   image_url: string;
 }
-interface SelectedCardpacks {
-  id: number;
-}
 
 const CardpackSelectScreen: React.FC<Props> = (props) => {
+  const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
-  const [cardCount, setCardCount] = useState(60);
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
-  const [selectedCardpacks, setSelectedCardpacks] = useState<
-    SelectedCardpacks[]
-  >([]);
 
   useEffect(() => {
     const getPacks = async (data: string) => {
@@ -46,14 +41,17 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
   }, []);
 
   const changeSelected = (id: any) => {
-    if (selectedCardpacks.includes(id)) {
-      setSelectedCardpacks(
-        selectedCardpacks.filter((selectedId) => selectedId !== id)
-      );
+    if (state.selectedCardpacks.includes(id)) {
+      dispatch({
+        type: "REMOVE_CARDPACK",
+        payload: id,
+      });
     }
-    if (!selectedCardpacks.includes(id)) {
-      setSelectedCardpacks([...selectedCardpacks, id]);
-      console.log("not found");
+    if (!state.selectedCardpacks.includes(id)) {
+      dispatch({
+        type: "SELECT_CARDPACK",
+        payload: id,
+      });
     }
   };
 
@@ -81,7 +79,7 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
             {cardpacks.map((cardpack) => (
               <Pressable
                 style={
-                  !selectedCardpacks.includes(cardpack.id)
+                  !state.selectedCardpacks.includes(cardpack.id)
                     ? cardpackStyles.cardpack
                     : cardpackStyles.selectedCardpack
                 }
@@ -91,14 +89,14 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
                 <Image
                   source={{ uri: cardpack.image_url }}
                   style={
-                    !selectedCardpacks.includes(cardpack.id)
+                    !state.selectedCardpacks.includes(cardpack.id)
                       ? cardpackStyles.cardpackImage
                       : cardpackStyles.cardpackImageSelected
                   }
                 />
                 <View
                   style={
-                    !selectedCardpacks.includes(cardpack.id)
+                    !state.selectedCardpacks.includes(cardpack.id)
                       ? cardpackStyles.cardpackTitleContainer
                       : cardpackStyles.selectedCardpackTitleContainer
                   }
@@ -120,25 +118,25 @@ const CardpackSelectScreen: React.FC<Props> = (props) => {
           <View style={cardpackStyles.cardCounter}>
             <Pressable
               style={cardpackStyles.cardAdjustmentCounter}
-              onPress={() => setCardCount(cardCount - 1)}
+              onPress={() => dispatch({ type: "DECREASE_CARD_COUNT" })}
             >
               <Text style={cardpackStyles.cardCounterText}>-</Text>
             </Pressable>
             <View style={cardpackStyles.cardCountBox}>
               <Text style={cardpackStyles.cardCount}>
-                {cardCount + " cards"}
+                {state.cardCount + " cards"}
               </Text>
             </View>
             <Pressable
               style={cardpackStyles.cardAdjustmentCounter}
-              onPress={() => setCardCount(cardCount + 1)}
+              onPress={() => dispatch({ type: "INCREASE_CARD_COUNT" })}
             >
               <Text style={cardpackStyles.cardCounterText}>+</Text>
             </Pressable>
           </View>
           <View style={cardpackStyles.cardpackCounter}>
             <Text style={cardpackStyles.cardCounterTextFrom}>
-              {`from ${selectedCardpacks.length} cardpacks`}
+              {`from ${state.selectedCardpacks.length} cardpacks`}
             </Text>
           </View>
         </View>
