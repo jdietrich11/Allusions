@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import { Text, View, Pressable } from "react-native";
 
+import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
+import shuffle from "../../helper/shuffle/shuffle";
 
 import instructionStyles from "./instruction.styles";
-import apiCall from "../../helper/APi/api";
 
 const Round1Rules = [
   { key: "read description" },
@@ -24,12 +25,22 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         let cards = await apiCall(cardsQuery);
         let { card } = cards.data;
         for (let j = 0; j < card.length; j++) {
-          await dispatch({ type: "ADD_CARD_TO_DECK", payload: card });
+          await dispatch({ type: "ADD_CARD_TO_DECK", payload: card[j] });
         }
       }
     };
-    getDeck();
-    console.log("loaded");
+    const shuffleUp = () => {
+      let newDeck = shuffle(state.deck);
+      newDeck = shuffle(state.deck);
+      dispatch({
+        type: "SHUFFLED_DECK",
+        payload: newDeck,
+      });
+    };
+    const limitDeck = () => {
+      dispatch({ type: "LIMIT_DECK" });
+    };
+    getDeck().then(shuffleUp).then(limitDeck);
   }, []);
 
   return (
@@ -48,7 +59,11 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
           <View style={instructionStyles.rulesContainer}>
             <Text style={instructionStyles.rulesTitle}>You Can...</Text>
             {Round1Rules.map((rule) => {
-              return <Text style={instructionStyles.ruleText}>{rule.key}</Text>;
+              return (
+                <Text key={rule.key} style={instructionStyles.ruleText}>
+                  {rule.key}
+                </Text>
+              );
             })}
           </View>
           <Pressable

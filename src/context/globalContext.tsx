@@ -16,7 +16,9 @@ type Action =
   | { type: "REMOVE_CARDPACK"; payload: number }
   | { type: "INCREASE_CARD_COUNT" }
   | { type: "DECREASE_CARD_COUNT" }
-  | { type: "ADD_CARD_TO_DECK"; payload: Card };
+  | { type: "ADD_CARD_TO_DECK"; payload: Card[] }
+  | { type: "SHUFFLED_DECK"; payload: Card[] }
+  | { type: "LIMIT_DECK" };
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -87,6 +89,16 @@ const globalReducer = (state: AppState, action: any) => {
       return {
         ...state,
         deck: [...state.deck, action.payload],
+      };
+    case "SHUFFLED_DECK":
+      return {
+        ...state,
+        deck: action.payload,
+      };
+    case "LIMIT_DECK":
+      return {
+        ...state,
+        deck: state.deck.slice(0, state.cardCount),
       };
     default:
       return state;
