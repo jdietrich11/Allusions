@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Text, View, Pressable } from "react-native";
+
 import { IStackScreenProps } from "../../library/StackScreenProps";
+import { GlobalContext } from "../../context/globalContext";
 
 import instructionStyles from "./instruction.styles";
+import apiCall from "../../helper/APi/api";
 
 const Round1Rules = [
   { key: "read description" },
@@ -12,6 +15,22 @@ const Round1Rules = [
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
+  const { state, dispatch } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const getDeck = async () => {
+      for (let i = 0; i < state.selectedCardpacks.length; i++) {
+        let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
+        let cards = await apiCall(cardsQuery);
+        let { card } = cards.data;
+        for (let j = 0; j < card.length; j++) {
+          await dispatch({ type: "ADD_CARD_TO_DECK", payload: card });
+        }
+      }
+    };
+    getDeck();
+    console.log("loaded");
+  }, []);
 
   return (
     <View style={instructionStyles.informationPageContainer}>
@@ -41,7 +60,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={instructionStyles.deckContainer}>
           <View>
-            <Text>60</Text>
+            <Text>{state.deck.length > 0 ? state.deck.length : ""}</Text>
           </View>
           <Text style={instructionStyles.deckText}>deck</Text>
         </View>

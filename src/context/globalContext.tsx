@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 
+interface Card {
+  id: number;
+  card_name: string;
+  card_hint: string;
+  point_value: number;
+  image_url: string;
+}
+
 type AppState = typeof initialState;
 type Action =
   | { type: "ADD_TO_TEAM_1"; payload: { id: number; name: string } }
@@ -7,7 +15,8 @@ type Action =
   | { type: "SELECT_CARDPACK"; payload: number }
   | { type: "REMOVE_CARDPACK"; payload: number }
   | { type: "INCREASE_CARD_COUNT" }
-  | { type: "DECREASE_CARD_COUNT" };
+  | { type: "DECREASE_CARD_COUNT" }
+  | { type: "ADD_CARD_TO_DECK"; payload: Card };
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -35,6 +44,8 @@ const initialState = {
   bestOneWordPony: "",
   bestHandAndBodyFlapper: "",
   fastestRightAnswer: "",
+  deck: [],
+  discardPile: [],
 };
 
 // reducer
@@ -71,6 +82,11 @@ const globalReducer = (state: AppState, action: any) => {
       return {
         ...state,
         cardCount: state.cardCount - 1,
+      };
+    case "ADD_CARD_TO_DECK":
+      return {
+        ...state,
+        deck: [...state.deck, action.payload],
       };
     default:
       return state;
