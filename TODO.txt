@@ -52,3 +52,5 @@ TODO
 
 // FINAL THING TO DO
 styles & animations
+tsc errors fix
+
