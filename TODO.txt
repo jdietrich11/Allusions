@@ -1,0 +1,54 @@
+TODO
+// HOME PAGE
+-- Make FAST RULES Page
+-- Make BROWSE Cardpack Page
+-- Make SETTINGS Page
+
+// TEAMS PAGE
+-- configure randomize button on teams Page
+-- how to play button --> rules page
+-- DO NOT allow moving past w/o enough players (4?)
+
+// CARDPACK PAGE
+-- configure auto game length on cardpack Page
+-- configure auto turn length on cardpack Page
+-- POST only owned cardpacks instead of all cardpacks
+
+// INSTRUCTION PAGE
+-- Add rule changes to information page for round 2 and 3
+-- Make the rune counter work for information page
+-- show whose turn it is from 
+
+// PLAYER TURN PAGE
+-- GESTURE HANDLER
+-- deck counter
+-- turn counter
+-- draw card mechanism
+
+// ROUND COMPLETED TURN
+-- if round 1 or 2 nav to instruction page
+-- if round 1 or 2 increase round counter
+-- if round 3 nav to endgame page
+
+// ENDGAME PAGE
+
+// FAST RULES PAGE
+-- show rules clearly for each of the 3 rounds
+-- header at top
+-- button on bottom to nav to teams page
+
+// BROWSE CARDPACK PAGE
+-- POST all cardpacks 
+-- price all cardpacks
+-- stripe buy cardpacks
+-- checkout page
+-- post newly owned cardpacks to db
+-- MUST login BEFORE checkout
+
+// settings page
+-- login 
+-- sign up 
+-- allow (adult content)?
+
+// FINAL THING TO DO
+styles & animations
