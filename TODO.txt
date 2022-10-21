@@ -4,13 +4,13 @@ TODO
 
 // TEAMS PAGE
 -- remove player functionality
+-- Take into Account of ODD number of players for randomize function
 
 // CARDPACK PAGE
 -- STYLING
 
 // INSTRUCTION PAGE
--- Add rule changes to information page for round 2 and 3
--- Make the rune counter work for information page
+-- Make the round counter work for information page
 -- show whose turn it is from 
 
 // PLAYER TURN PAGE

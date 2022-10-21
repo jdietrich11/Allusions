@@ -83,6 +83,11 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         turnTime: action.payload,
       };
+    case "INCREASE_ROUND_COUNT":
+      return {
+        ...state,
+        roundCount: state.roundCount++,
+      };
     default:
       return state;
   }

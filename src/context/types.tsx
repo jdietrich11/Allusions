@@ -15,7 +15,8 @@ export type Action =
   | { type: "GUESSED_CORRECT" }
   | { type: "CLEAR_TEAMS" }
   | { type: "REMOVE_PLAYER"; payload: number }
-  | { type: "SET_TURN_TIME"; payload: number };
+  | { type: "SET_TURN_TIME"; payload: number }
+  | { type: "INCREASE_ROUND_COUNT" };
 
 export interface ProviderProps {
   children: React.ReactNode;

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text } from "react-native";
+import { GlobalContext } from "../../context/globalContext";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 
 import scoreScreenStyles from "./scores.styles";
@@ -7,10 +8,22 @@ import scoreScreenStyles from "./scores.styles";
 const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const [round, setRound] = useState(1);
+  const { state, dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("endGame");
+      console.log(state.roundCount);
+      if (state.roundCount === 1 || state.roundCount === 2) {
+        dispatch({ type: "INCREASE_ROUND_COUNT" });
+        navigation.navigate("instruction");
+        console.log("instruction");
+        return;
+      }
+      if (state.roundCount === 3) {
+        console.log("endgame");
+        navigation.navigate("endGame");
+        return;
+      }
     }, 3000);
   }, []);
 
