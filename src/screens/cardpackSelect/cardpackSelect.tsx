@@ -68,7 +68,7 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
             style={cardpackStyles.scrollView}
             contentContainerStyle={cardpackStyles.scrollViewContent}
           >
-            {cardpacks.map((cardpack) => (
+            {cardpacks.map((cardpack: Cardpack) => (
               <Pressable
                 style={
                   !state.selectedCardpacks.includes(cardpack.id)

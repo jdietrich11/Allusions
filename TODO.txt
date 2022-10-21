@@ -2,8 +2,7 @@ TODO
 // HOME Page
 
 // TEAMS PAGE
--- configure randomize button on teams Page
--- how to play button --> rules page
+-- remove player functionality
 -- DO NOT allow moving past w/o enough players (4?)
 
 // CARDPACK PAGE

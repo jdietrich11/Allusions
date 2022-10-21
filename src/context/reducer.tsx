@@ -16,8 +16,8 @@ export const globalReducer = (state: AppState, action: any) => {
     case "REMOVE_PLAYER":
       return {
         ...state,
-        team1: state.team1.filter((id) => id !== action.payload),
-        team2: state.team2.filter((id) => id !== action.payload),
+        team1: state.team1.filter((playerId) => playerId !== action.payload),
+        team2: state.team2.filter((playerId) => playerId !== action.payload),
       };
     case "CLEAR_TEAMS":
       return {

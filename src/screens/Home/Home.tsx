@@ -15,13 +15,22 @@ const HomeScreen: React.FC<IStackScreenProps> = (props) => {
       >
         <Text style={homeStyles.button}>Play!</Text>
       </Pressable>
-      <Pressable style={homeStyles.buttonContainer}>
+      <Pressable
+        onPress={() => navigation.navigate("rules")}
+        style={homeStyles.buttonContainer}
+      >
         <Text style={homeStyles.button}>Fast Rules!</Text>
       </Pressable>
-      <Pressable style={homeStyles.buttonContainer}>
+      <Pressable
+        onPress={() => navigation.navigate("browse")}
+        style={homeStyles.buttonContainer}
+      >
         <Text style={homeStyles.button}>Browse Cardpacks</Text>
       </Pressable>
-      <Pressable style={homeStyles.buttonContainer}>
+      <Pressable
+        onPress={() => navigation.navigate("settings")}
+        style={homeStyles.buttonContainer}
+      >
         <Text style={homeStyles.button}>Settings</Text>
       </Pressable>
     </View>

@@ -56,8 +56,6 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
         payload: players[j],
       });
     }
-
-    console.log(players);
   };
 
   return (
@@ -84,13 +82,12 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
                   <Text>{teamMember.name}</Text>
                   <Pressable
                     style={teamsStyles.removePlyrBtn}
-                    onPress={() => {
+                    onPress={() =>
                       dispatch({
                         type: "REMOVE_PLAYER",
                         payload: teamMember.id,
-                      });
-                      console.log("click");
-                    }}
+                      })
+                    }
                   >
                     <Text style={teamsStyles.removePlyrBtnText}>x</Text>
                   </Pressable>
