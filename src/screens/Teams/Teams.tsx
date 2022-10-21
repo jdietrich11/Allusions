@@ -115,6 +115,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
                 <View style={teamsStyles.player} key={teamMember.id}>
                   <Text>{teamMember.name}</Text>
                   <Pressable
+                    style={teamsStyles.removePlyrBtn}
                     onPress={() =>
                       dispatch({
                         type: "REMOVE_PLAYER",
@@ -122,7 +123,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
                       })
                     }
                   >
-                    <Text>x</Text>
+                    <Text style={teamsStyles.removePlyrBtnText}>x</Text>
                   </Pressable>
                 </View>
               ))
