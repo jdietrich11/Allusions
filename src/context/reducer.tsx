@@ -78,6 +78,11 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         discardPile: [...state.discardPile, state.activeCard],
       };
+    case "SET_TURN_TIME":
+      return {
+        ...state,
+        turnTime: action.payload,
+      };
     default:
       return state;
   }

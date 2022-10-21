@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text } from "react-native";
-import { IStackScreenProps } from "../../library/StackScreenProps";
 
+import { GlobalContext } from "../../context/globalContext";
+import { IStackScreenProps } from "../../library/StackScreenProps";
 import playerTurnStyles from "./playerTurn.styles";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
+  const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
-  const [timer, setTimer] = useState(3);
+  const [timer, setTimer] = useState(state.turnTime);
 
   const tickTimer = () => {
     setTimeout(() => {

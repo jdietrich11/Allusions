@@ -4,7 +4,7 @@ import { Text, View, Pressable } from "react-native";
 import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
-import shuffle from "../../helper/shuffle/shuffle";
+import { shuffle } from "../../helper/shuffle/shuffle";
 
 import instructionStyles from "./instruction.styles";
 
@@ -48,7 +48,9 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   return (
     <View style={instructionStyles.informationPageContainer}>
       <View style={instructionStyles.timerContainer}>
-        <Text style={instructionStyles.timerText}>60 Seconds</Text>
+        <Text
+          style={instructionStyles.timerText}
+        >{`${state.turnTime} Seconds`}</Text>
       </View>
       <View style={instructionStyles.playAreaInfo}>
         <View style={instructionStyles.skipContainer}>

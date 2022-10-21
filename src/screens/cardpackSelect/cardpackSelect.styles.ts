@@ -57,6 +57,7 @@ const cardpackStyles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     padding: 8,
+    overflow: "hidden",
   },
   selectedCardpack: {
     flexDirection: "column",

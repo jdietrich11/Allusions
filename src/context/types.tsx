@@ -14,7 +14,8 @@ export type Action =
   | { type: "DRAW_CARD" }
   | { type: "GUESSED_CORRECT" }
   | { type: "CLEAR_TEAMS" }
-  | { type: "REMOVE_PLAYER"; payload: number };
+  | { type: "REMOVE_PLAYER"; payload: number }
+  | { type: "SET_TURN_TIME"; payload: number };
 
 export interface ProviderProps {
   children: React.ReactNode;

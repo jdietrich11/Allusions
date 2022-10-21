@@ -7,6 +7,7 @@ export const initialState = {
   team2Score: 0,
   team2RoundWins: 0,
   selectedCardpacks: [],
+  turnTime: 60,
   cardCount: 60,
   roundCount: 1,
   round1MVP: "",

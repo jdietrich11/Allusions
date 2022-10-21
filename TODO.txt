@@ -1,14 +1,12 @@
 TODO
 // HOME Page
+-- STYLING
 
 // TEAMS PAGE
 -- remove player functionality
--- DO NOT allow moving past w/o enough players (4?)
 
 // CARDPACK PAGE
--- configure auto game length on cardpack Page
--- configure auto turn length on cardpack Page
--- POST only owned cardpacks instead of all cardpacks
+-- STYLING
 
 // INSTRUCTION PAGE
 -- Add rule changes to information page for round 2 and 3
@@ -44,6 +42,8 @@ TODO
 // settings page
 -- login 
 -- sign up 
+-- -- sign up give owned cardpack default
+-- -- sign up set new user to db
 -- allow (adult content)?
 
 // FINAL THING TO DO

@@ -30,6 +30,16 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
     setTeam2Input("");
   };
 
+  const toCardpack = () => {
+    // if (state.team1.length + state.team2.length > 3) {
+    //   navigation.navigate("cardpackSelect");
+    // }
+    // if (state.team1.length + state.team2.length <= 3) {
+    //   alert("Sorry you need at least 4 players");
+    // }
+    navigation.navigate("cardpackSelect");
+  };
+
   const randomizeTeams = () => {
     let players: Teams[] = [];
     for (let i = 0; i < state.team1.length; i++) {
@@ -148,7 +158,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
         </Pressable>
         <Pressable
           style={teamsStyles.nextButtonContainer}
-          onPress={() => navigation.navigate("cardpackSelect")}
+          onPress={() => toCardpack()}
         >
           <Text style={teamsStyles.nextButtonText}>&rarr;</Text>
         </Pressable>

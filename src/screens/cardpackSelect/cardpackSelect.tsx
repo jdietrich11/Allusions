@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, Text, Pressable, Image, ScrollView } from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
@@ -19,18 +12,49 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
+  const [playtime, setPlaytime] = useState(45);
 
   useEffect(() => {
     const getPacks = async (data: string) => {
       let cardpack = await apiCall(data);
-      const { cardpack_list } = await cardpack.data;
-      setCardpacks(cardpack_list);
+      const { purchased_cardpack } = await cardpack.data;
+      return purchased_cardpack;
+    };
+    const getOwnedPacks = async (purchasedCardpacks: any[]) => {
+      let ids: number[] = [];
+      let packs: Cardpack[] = [];
+      for (let i = 0; i < purchasedCardpacks.length; i++) {
+        ids = [...ids, purchasedCardpacks[i].cardpack_id];
+      }
+      for (let j = 0; j < ids.length; j++) {
+        let res = await apiCall(cardpackQuery(ids[j]));
+        let { cardpack_list } = await res.data;
+        packs = [...packs, cardpack_list[0]];
+      }
+      setCardpacks(packs);
     };
 
-    let cardpackQuery = "cardpack_list { id cardpack_name image_url }";
+    let cardpackQuery = (id: number) => {
+      return `cardpack_list(where: {id: {_eq: ${id}}}) { id cardpack_name image_url }`;
+    };
+    let ownedPacksQuery =
+      "purchased_cardpack(where: {user_id: {_eq: 1}}) { cardpack_id }";
 
-    getPacks(cardpackQuery);
+    getPacks(ownedPacksQuery).then((res) => getOwnedPacks(res));
   }, []);
+
+  useEffect(() => {
+    let perTurn = Math.floor(
+      ((state.team1.length + state.team2.length) * state.cardCount) / 12
+    );
+    setPlaytime(perTurn);
+    dispatch({
+      type: "SET_TURN_TIME",
+      payload: Math.floor(
+        (state.cardCount / (state.team1.length + state.team2.length)) * 12
+      ),
+    });
+  }, [state.cardCount]);
 
   const changeSelected = (id: any) => {
     if (state.selectedCardpacks.includes(id)) {
@@ -133,16 +157,20 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
           </View>
         </View>
         <View style={cardpackStyles.playtimeContainer}>
-          <Text>{"~ 40 Minutes"}</Text>
+          <Text>{`~ ${playtime} Minutes`}</Text>
         </View>
       </View>
       <View style={cardpackStyles.secondsPerTurnContainer}>
         <View style={cardpackStyles.secondsCounter}>
-          <TextInput style={cardpackStyles.textInput} value="160" />
+          <Text style={cardpackStyles.textInput}>{state.turnTime}</Text>
           <Text style={cardpackStyles.secondTurnsText}>second turns</Text>
         </View>
         <Pressable
-          onPress={() => navigation.navigate("instruction")}
+          onPress={() =>
+            state.selectedCardpacks.length >= 1
+              ? navigation.navigate("instruction")
+              : alert("please select desired cardpacks first")
+          }
           style={cardpackStyles.nextPageButton}
         >
           <Text style={cardpackStyles.nextPageButtonText}>&rarr;</Text>
