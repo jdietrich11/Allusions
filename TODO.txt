@@ -1,8 +1,5 @@
 TODO
-// HOME PAGE
--- Make FAST RULES Page
--- Make BROWSE Cardpack Page
--- Make SETTINGS Page
+// HOME Page
 
 // TEAMS PAGE
 -- configure randomize button on teams Page

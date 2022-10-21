@@ -8,22 +8,14 @@ import {
   ScrollView,
 } from "react-native";
 
+import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import apiCall from "../../helper/APi/api";
+import { Cardpack } from "../../helper/interfaces/interfaces";
 
 import cardpackStyles from "./cardpackSelect.styles";
 
-interface Props {
-  navigation: any;
-}
-
-interface Cardpack {
-  id: any;
-  cardpack_name: string;
-  image_url: string;
-}
-
-const CardpackSelectScreen: React.FC<Props> = (props) => {
+const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
