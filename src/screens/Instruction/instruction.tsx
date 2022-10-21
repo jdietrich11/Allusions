@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { Text, View, Pressable } from "react-native";
 
 import apiCall from "../../helper/APi/api";
@@ -13,10 +13,12 @@ const Round1Rules = [
   { key: "make sound effects" },
   { key: "use as many words as needed" },
 ];
+const Round2Rules = [];
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const { state, dispatch } = useContext(GlobalContext);
+  const [rules, setRules] = useState<string[]>([]);
 
   useEffect(() => {
     if (state.roundCount === 1) {
@@ -43,7 +45,35 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       };
       getDeck().then(shuffleUp).then(limitDeck);
     }
+    setRule(state.roundCount);
   }, []);
+
+  const setRule = (round: number) => {
+    let rules: string[] = [];
+    if (round === 1) {
+      rules = [
+        "Use any words as long as it is not shared with the card",
+        "Points are at face value on the card",
+      ];
+      return setRules(rules);
+    }
+    if (round === 2) {
+      rules = [
+        "Use only 1 word",
+        "CANNOT be shared with card name",
+        "Points are calculated by multiplying the card point value by 2",
+      ];
+      return setRules(rules);
+    }
+    if (round === 3) {
+      rules = [
+        "Use actions ONLY",
+        "NO WORDS",
+        "Points are calculated multiplying the card point value by 3",
+      ];
+      return setRules(rules);
+    }
+  };
 
   return (
     <View style={instructionStyles.informationPageContainer}>
@@ -62,10 +92,10 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
           </View>
           <View style={instructionStyles.rulesContainer}>
             <Text style={instructionStyles.rulesTitle}>You Can...</Text>
-            {Round1Rules.map((rule) => {
+            {rules.map((rule) => {
               return (
-                <Text key={rule.key} style={instructionStyles.ruleText}>
-                  {rule.key}
+                <Text key={rule} style={instructionStyles.ruleText}>
+                  {rule}
                 </Text>
               );
             })}

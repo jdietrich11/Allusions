@@ -29,6 +29,7 @@ const instructionStyles = StyleSheet.create({
   },
   ruleText: {
     fontSize: 22,
+    marginBottom: 22,
   },
   skipContainer: {
     height: "90%",
