@@ -8,7 +8,7 @@ import InstructionScreen from "../screens/Instruction/instruction";
 import PlayerTurnScreen from "../screens/playerTurn/playerTurn";
 import ScoreScreen from "../screens/scores/scores";
 import SettingsScreen from "../screens/settings/settings";
-import TeamsScreen from "../screens/Teams/Teams";
+import TeamsScreen from "../screens/teams/teams";
 
 const routes: IRouteProps[] = [
   {

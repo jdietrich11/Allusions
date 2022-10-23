@@ -5,6 +5,7 @@ import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import { shufflePlayers } from "../../helper/shuffle/shuffle";
 import { Teams } from "../../helper/interfaces/interfaces";
+import Header from "../../helper/header/header";
 
 import teamsStyles from "./teams.styles";
 
@@ -31,13 +32,12 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   const toCardpack = () => {
-    // if (state.team1.length + state.team2.length > 3) {
-    //   navigation.navigate("cardpackSelect");
-    // }
-    // if (state.team1.length + state.team2.length <= 3) {
-    //   alert("Sorry you need at least 4 players");
-    // }
-    navigation.navigate("cardpackSelect");
+    if (state.team1.length + state.team2.length > 3) {
+      navigation.navigate("cardpackSelect");
+    }
+    if (state.team1.length + state.team2.length <= 3) {
+      alert("Sorry you need at least 4 players");
+    }
   };
 
   const randomizeTeams = () => {
@@ -70,17 +70,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
 
   return (
     <View style={teamsStyles.teamsPageContainer}>
-      <View style={teamsStyles.headerContainer}>
-        <Pressable>
-          <Text style={teamsStyles.headerText}>&larr;</Text>
-        </Pressable>
-        <View style={teamsStyles.howToContainer}>
-          <Text style={teamsStyles.howToText}>How to play</Text>
-          <Pressable style={teamsStyles.howToButton}>
-            <Text style={teamsStyles.howToButtonText}>?</Text>
-          </Pressable>
-        </View>
-      </View>
+      <Header name={"home"} navigation={props.navigation} route={props.route} />
       <View style={teamsStyles.team1Container}>
         <View style={teamsStyles.teamHeader}>
           <Text style={teamsStyles.teamHeaderText}>Team 1</Text>

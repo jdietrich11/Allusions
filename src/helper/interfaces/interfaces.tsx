@@ -24,3 +24,12 @@ export interface Card {
   point_value: number;
   image_url: string;
 }
+
+export interface RulesInt {
+  rules: RuleGroup;
+}
+
+interface RuleGroup {
+  id: number;
+  rules: string[];
+}
