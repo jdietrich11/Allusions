@@ -21,4 +21,5 @@ export const initialState = {
   deck: [],
   discardPile: [],
   activeCard: {},
+  user: {},
 };

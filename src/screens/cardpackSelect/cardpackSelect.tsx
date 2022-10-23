@@ -3,7 +3,6 @@ import { View, Text, Pressable, Image, ScrollView } from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
-import apiCall from "../../helper/APi/api";
 import { Cardpack } from "../../helper/interfaces/interfaces";
 
 import cardpackStyles from "./cardpackSelect.styles";
@@ -15,32 +14,15 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   const [playtime, setPlaytime] = useState(45);
 
   useEffect(() => {
-    const getPacks = async (data: string) => {
-      let cardpack = await apiCall(data);
-      const { purchased_cardpack } = await cardpack.data;
-      return purchased_cardpack;
-    };
-    const getOwnedPacks = async (purchasedCardpacks: any[]) => {
-      let ids: number[] = [];
-      let packs: Cardpack[] = [];
-      for (let i = 0; i < purchasedCardpacks.length; i++) {
-        ids = [...ids, purchasedCardpacks[i].cardpack_id];
-      }
-      for (let j = 0; j < ids.length; j++) {
-        let res = await apiCall(cardpackQuery(ids[j]));
-        let { cardpack_list } = await res.data;
-        packs = [...packs, cardpack_list[0]];
-      }
-      setCardpacks(packs);
-    };
-
-    let cardpackQuery = (id: number) => {
-      return `cardpack_list(where: {id: {_eq: ${id}}}) { id cardpack_name image_url }`;
-    };
-    let ownedPacksQuery =
-      "purchased_cardpack(where: {user_id: {_eq: 1}}) { cardpack_id }";
-
-    getPacks(ownedPacksQuery).then((res) => getOwnedPacks(res));
+    let packs: Cardpack[] = [];
+    let id = [1, 3, 7];
+    for (let i = 0; i < id.length; i++) {
+      let pack = state.cardpacks.filter(
+        (cardpack: Cardpack) => cardpack.id === id[i]
+      );
+      packs = [...packs, pack[0]];
+    }
+    setCardpacks(packs);
   }, []);
 
   useEffect(() => {

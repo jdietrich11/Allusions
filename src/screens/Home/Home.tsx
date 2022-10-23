@@ -3,14 +3,13 @@ import { Text, View, Pressable } from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import apiCall from "../../helper/APi/api";
-import { Cardpack } from "../../helper/interfaces/interfaces";
 import { GlobalContext } from "../../context/globalContext";
 
 import homeStyles from "./Home.styles";
 
 const HomeScreen: React.FC<IStackScreenProps> = (props) => {
-  const { navigation, route, name } = props;
-  const { state, dispatch } = useContext(GlobalContext);
+  const { navigation } = props;
+  const { dispatch } = useContext(GlobalContext);
 
   useEffect(() => {
     const getPacks = async (data: string) => {

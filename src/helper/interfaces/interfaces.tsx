@@ -34,3 +34,9 @@ interface RuleGroup {
   id: number;
   rules: string[];
 }
+
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+}
