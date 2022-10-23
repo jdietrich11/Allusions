@@ -1,4 +1,4 @@
-import { Card } from "../helper/interfaces/interfaces";
+import { Card, Cardpack } from "../helper/interfaces/interfaces";
 
 export type Action =
   | { type: "ADD_TO_TEAM_1"; payload: { id: number; name: string } }
@@ -16,7 +16,8 @@ export type Action =
   | { type: "CLEAR_TEAMS" }
   | { type: "REMOVE_PLAYER"; payload: number }
   | { type: "SET_TURN_TIME"; payload: number }
-  | { type: "INCREASE_ROUND_COUNT" };
+  | { type: "INCREASE_ROUND_COUNT" }
+  | { type: "SET_CARDPACKS"; payload: Cardpack[] };
 
 export interface ProviderProps {
   children: React.ReactNode;

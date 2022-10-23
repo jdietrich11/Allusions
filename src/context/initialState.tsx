@@ -6,6 +6,7 @@ export const initialState = {
   team2: [],
   team2Score: 0,
   team2RoundWins: 0,
+  cardpacks: [],
   selectedCardpacks: [],
   turnTime: 60,
   cardCount: 60,

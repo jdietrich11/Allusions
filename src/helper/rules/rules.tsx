@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import { RulesInt } from "../interfaces/interfaces";
 
 import { rulesStyles } from "./rules.styles";

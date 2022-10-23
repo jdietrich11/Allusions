@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Text, View, Pressable } from "react-native";
+
 import { IStackScreenProps } from "../../library/StackScreenProps";
+import apiCall from "../../helper/APi/api";
+import { Cardpack } from "../../helper/interfaces/interfaces";
+import { GlobalContext } from "../../context/globalContext";
 
 import homeStyles from "./Home.styles";
 
 const HomeScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation, route, name } = props;
+  const { state, dispatch } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const getPacks = async (data: string) => {
+      let cardpack = await apiCall(data);
+      const { cardpack_list } = await cardpack.data;
+      dispatch({
+        type: "SET_CARDPACKS",
+        payload: cardpack_list,
+      });
+      return cardpack_list;
+    };
+
+    let cardpackQuery = `cardpack_list { id cardpack_name image_url price }`;
+
+    getPacks(cardpackQuery);
+  }, []);
 
   return (
     <View style={homeStyles.container}>
@@ -19,7 +40,7 @@ const HomeScreen: React.FC<IStackScreenProps> = (props) => {
         onPress={() => navigation.navigate("rules")}
         style={homeStyles.buttonContainer}
       >
-        <Text style={homeStyles.button}>Fast Rules!</Text>
+        <Text style={homeStyles.button}>How to play!</Text>
       </Pressable>
       <Pressable
         onPress={() => navigation.navigate("browse")}

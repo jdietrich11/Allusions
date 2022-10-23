@@ -88,6 +88,12 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         roundCount: state.roundCount++,
       };
+    case "SET_CARDPACKS":
+      return {
+        ...state,
+        cardpacks: action.payload,
+      };
+
     default:
       return state;
   }

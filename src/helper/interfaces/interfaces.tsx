@@ -7,6 +7,7 @@ export interface Cardpack {
   id: any;
   cardpack_name: string;
   image_url: string;
+  price: number;
 }
 
 export interface ShuffleProps {
