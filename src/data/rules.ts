@@ -1,4 +1,4 @@
-export const rules = [
+export const rulesData = [
   {
     id: 1,
     rules: [

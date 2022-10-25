@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 import Header from "../../helper/header/header";
 import { IStackScreenProps } from "../../library/StackScreenProps";
-import { rules } from "../../data/rules";
+import { rulesData } from "../../data/rules";
 import Rules from "../../helper/rules/rules";
 
 import fastRulesStyles from "./fastRules.styles";
@@ -14,7 +14,7 @@ const FastRulesScreen: React.FC<IStackScreenProps> = (props) => {
     <View style={fastRulesStyles.rulesPageContainer}>
       <Header name={name} navigation={navigation} route={route} />
       <View style={fastRulesStyles.rulesContainer}>
-        {rules.map((ruleGroup) => (
+        {rulesData.map((ruleGroup) => (
           <View style={fastRulesStyles.roundContainer}>
             <Text
               style={fastRulesStyles.roundTitleText}

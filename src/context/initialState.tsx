@@ -10,7 +10,7 @@ export const initialState = {
   selectedCardpacks: [],
   turnTime: 60,
   cardCount: 60,
-  roundCount: 1,
+  roundCount: 0,
   round1MVP: "",
   round2MVP: "",
   round3MVP: "",

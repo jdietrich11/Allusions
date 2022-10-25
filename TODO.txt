@@ -12,6 +12,7 @@ TODO
 // INSTRUCTION PAGE
 -- Make the round counter work for information page
 -- show whose turn it is
+-- fix limit deck function
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER

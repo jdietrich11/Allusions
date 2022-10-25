@@ -5,15 +5,9 @@ import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import { shuffle } from "../../helper/shuffle/shuffle";
+import getDeck from "../../helper/getDeck/getDeck";
 
 import instructionStyles from "./instruction.styles";
-
-const Round1Rules = [
-  { key: "read description" },
-  { key: "make sound effects" },
-  { key: "use as many words as needed" },
-];
-const Round2Rules = [];
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
@@ -21,30 +15,26 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const [rules, setRules] = useState<string[]>([]);
 
   useEffect(() => {
+    // state.roundCount++;
+    getDeck();
+
     if (state.roundCount === 1) {
-      const getDeck = async () => {
-        for (let i = 0; i < state.selectedCardpacks.length; i++) {
-          let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
-          let cards = await apiCall(cardsQuery);
-          let { card } = cards.data;
-          for (let j = 0; j < card.length; j++) {
-            await dispatch({ type: "ADD_CARD_TO_DECK", payload: card[j] });
-          }
-        }
-      };
-      const shuffleUp = () => {
-        let newDeck = shuffle(state.deck);
-        newDeck = shuffle(state.deck);
-        dispatch({
-          type: "SHUFFLED_DECK",
-          payload: newDeck,
-        });
-      };
-      const limitDeck = () => {
-        dispatch({ type: "LIMIT_DECK" });
-      };
-      getDeck().then(shuffleUp).then(limitDeck);
     }
+    const shuffleUp = async () => {
+      let newDeck = await shuffle(state.deck);
+      newDeck = await shuffle(state.deck);
+      await dispatch({
+        type: "SHUFFLED_DECK",
+        payload: newDeck,
+      });
+      // console.log(state.deck[0]);
+    };
+    const limitDeck = async () => {
+      let tempDeck = state.deck.splice(0, state.cardCount);
+      state.deck = tempDeck;
+      // console.log(state.deck[0]);
+      // await dispatch({ type: "LIMIT_DECK" });
+    };
     setRule(state.roundCount);
   }, []);
 

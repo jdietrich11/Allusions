@@ -7,7 +7,7 @@ export type Action =
   | { type: "REMOVE_CARDPACK"; payload: number }
   | { type: "INCREASE_CARD_COUNT" }
   | { type: "DECREASE_CARD_COUNT" }
-  | { type: "ADD_CARD_TO_DECK"; payload: Card[] }
+  | { type: "ADD_CARD_TO_DECK"; payload: Card }
   | { type: "SHUFFLED_DECK"; payload: Card[] }
   | { type: "RESHUFFLE_DECK" }
   | { type: "LIMIT_DECK" }
