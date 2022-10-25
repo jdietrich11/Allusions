@@ -18,7 +18,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   const addTeam1Member = (inp: string) => {
     dispatch({
       type: "ADD_TO_TEAM_1",
-      payload: { id: Math.random(), name: inp },
+      payload: { id: Math.floor(Math.random() * 200), name: inp },
     });
     setTeam1Input("");
   };
@@ -26,7 +26,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   const addTeam2Member = (inp: string) => {
     dispatch({
       type: "ADD_TO_TEAM_2",
-      payload: { id: Math.random(), name: inp },
+      payload: { id: Math.floor(Math.random() * 200) + 200, name: inp },
     });
     setTeam2Input("");
   };
@@ -42,6 +42,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
 
   const randomizeTeams = () => {
     let players: Teams[] = [];
+
     for (let i = 0; i < state.team1.length; i++) {
       players = [...players, state.team1[i]];
     }
@@ -60,12 +61,19 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
         payload: players[i],
       });
     }
-    for (let j = players.length / 2; j < players.length; j++) {
+    for (let j = Math.floor(players.length / 2) + 1; j < players.length; j++) {
       dispatch({
         type: "ADD_TO_TEAM_2",
         payload: players[j],
       });
     }
+  };
+
+  const removePlayer = (id: number) => {
+    dispatch({
+      type: "REMOVE_PLAYER",
+      payload: id,
+    });
   };
 
   return (
@@ -82,12 +90,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
                   <Text>{teamMember.name}</Text>
                   <Pressable
                     style={teamsStyles.removePlyrBtn}
-                    onPress={() =>
-                      dispatch({
-                        type: "REMOVE_PLAYER",
-                        payload: teamMember.id,
-                      })
-                    }
+                    onPress={() => removePlayer(teamMember.id)}
                   >
                     <Text style={teamsStyles.removePlyrBtnText}>x</Text>
                   </Pressable>
@@ -116,12 +119,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
                   <Text>{teamMember.name}</Text>
                   <Pressable
                     style={teamsStyles.removePlyrBtn}
-                    onPress={() =>
-                      dispatch({
-                        type: "REMOVE_PLAYER",
-                        payload: teamMember.id,
-                      })
-                    }
+                    onPress={() => removePlayer(teamMember.id)}
                   >
                     <Text style={teamsStyles.removePlyrBtnText}>x</Text>
                   </Pressable>

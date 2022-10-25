@@ -3,15 +3,15 @@ TODO
 -- STYLING
 
 // TEAMS PAGE
--- remove player functionality
--- Take into Account of ODD number of players for randomize function
+-- (DONE) remove player functionality
+-- (DONE) Take into Account of ODD number of players for randomize function
 
 // CARDPACK PAGE
 -- STYLING
 
 // INSTRUCTION PAGE
 -- Make the round counter work for information page
--- show whose turn it is from 
+-- show whose turn it is
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER
@@ -42,6 +42,7 @@ TODO
 // settings page
 -- login 
 -- sign up 
+-- setup firestore
 -- -- sign up give owned cardpack default
 -- -- sign up set new user to db
 -- allow (adult content)?

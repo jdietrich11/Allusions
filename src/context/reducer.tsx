@@ -1,4 +1,5 @@
 import { AppState } from "./globalContext";
+import { Teams } from "../helper/interfaces/interfaces";
 
 // reducer
 export const globalReducer = (state: AppState, action: any) => {
@@ -16,8 +17,8 @@ export const globalReducer = (state: AppState, action: any) => {
     case "REMOVE_PLAYER":
       return {
         ...state,
-        team1: state.team1.filter((playerId) => playerId !== action.payload),
-        team2: state.team2.filter((playerId) => playerId !== action.payload),
+        team1: state.team1.filter((obj: Teams) => obj.id !== action.payload),
+        team2: state.team2.filter((obj: Teams) => obj.id !== action.payload),
       };
     case "CLEAR_TEAMS":
       return {
