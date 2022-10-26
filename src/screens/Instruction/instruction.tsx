@@ -5,7 +5,7 @@ import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import { shuffle } from "../../helper/shuffle/shuffle";
-import getDeck from "../../helper/getDeck/getDeck";
+import { rulesData } from "../../data/rules";
 
 import instructionStyles from "./instruction.styles";
 
@@ -13,55 +13,62 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const { state, dispatch } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
+  const [counter, setCounter] = useState(0);
+
+  const getDeck = async (query: string) => {
+    try {
+      let cards = await apiCall(query);
+      let { card } = cards.data;
+      for (let j = 0; j < card.length; j++) {
+        dispatch({
+          type: "ADD_CARD_TO_DECK",
+          payload: card[j],
+        });
+      }
+      setCounter(counter + 1);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const shuffleUp = async () => {
+    let newDeck = await shuffle(state.deck);
+    newDeck = await shuffle(state.deck);
+    await dispatch({
+      type: "SHUFFLED_DECK",
+      payload: newDeck,
+    });
+  };
+
+  const limitDeck = async () => {
+    await dispatch({ type: "LIMIT_DECK" });
+  };
 
   useEffect(() => {
-    // state.roundCount++;
-    getDeck();
-
+    state.roundCount++;
     if (state.roundCount === 1) {
     }
-    const shuffleUp = async () => {
-      let newDeck = await shuffle(state.deck);
-      newDeck = await shuffle(state.deck);
-      await dispatch({
-        type: "SHUFFLED_DECK",
-        payload: newDeck,
-      });
-      // console.log(state.deck[0]);
-    };
-    const limitDeck = async () => {
-      let tempDeck = state.deck.splice(0, state.cardCount);
-      state.deck = tempDeck;
-      // console.log(state.deck[0]);
-      // await dispatch({ type: "LIMIT_DECK" });
-    };
+    for (let i = 0; i < state.selectedCardpacks.length; i++) {
+      let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
+      getDeck(cardsQuery);
+    }
+
     setRule(state.roundCount);
   }, []);
 
+  useEffect(() => {
+    shuffleUp().then(() => limitDeck());
+  }, [counter]);
+
   const setRule = (round: number) => {
-    let rules: string[] = [];
     if (round === 1) {
-      rules = [
-        "Use any words as long as it is not shared with the card",
-        "Points are at face value on the card",
-      ];
-      return setRules(rules);
+      return setRules(rulesData[0].rules);
     }
     if (round === 2) {
-      rules = [
-        "Use only 1 word",
-        "CANNOT be shared with card name",
-        "Points are calculated by multiplying the card point value by 2",
-      ];
-      return setRules(rules);
+      return setRules(rulesData[1].rules);
     }
     if (round === 3) {
-      rules = [
-        "Use actions ONLY",
-        "NO WORDS",
-        "Points are calculated multiplying the card point value by 3",
-      ];
-      return setRules(rules);
+      return setRules(rulesData[2].rules);
     }
   };
 
@@ -99,7 +106,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={instructionStyles.deckContainer}>
           <View>
-            <Text>{state.deck.length > 0 ? state.deck.length : ""}</Text>
+            <Text>{state.deck.length}</Text>
           </View>
           <Text style={instructionStyles.deckText}>deck</Text>
         </View>
@@ -112,3 +119,4 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
 };
 
 export default InstructionScreen;
+//{state.deck.length > 0 ? state.deck.length : ""}

@@ -15,6 +15,12 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   const [team1Input, setTeam1Input] = useState("");
   const [team2Input, setTeam2Input] = useState("");
 
+  useEffect(() => {
+    for (let i = 0; i < 4; i++) {
+      dispatch({ type: "ADD_TO_TEAM_1", payload: { id: i, name: `${i}` } });
+    }
+  }, []);
+
   const addTeam1Member = (inp: string) => {
     dispatch({
       type: "ADD_TO_TEAM_1",
