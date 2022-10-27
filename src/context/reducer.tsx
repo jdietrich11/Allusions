@@ -48,12 +48,7 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         cardCount: state.cardCount - 1,
       };
-    case "ADD_CARD_TO_DECK":
-      return {
-        ...state,
-        deck: [...state.deck, action.payload],
-      };
-    case "SHUFFLED_DECK":
+    case "SET_DECK":
       return {
         ...state,
         deck: action.payload,
@@ -63,11 +58,6 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         deck: state.discardPile,
         discardPile: [],
-      };
-    case "LIMIT_DECK":
-      return {
-        ...state,
-        deck: state.deck.slice(0, state.cardCount),
       };
     case "DRAW_CARD":
       return {
@@ -94,7 +84,11 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         cardpacks: action.payload,
       };
-
+    case "SET_ACTIVE_PLAYER":
+      return {
+        ...state,
+        activePlayer: action.payload,
+      };
     default:
       return state;
   }

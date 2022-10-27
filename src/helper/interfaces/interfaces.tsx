@@ -40,3 +40,9 @@ export interface User {
   username: string;
   email: string;
 }
+
+export interface Player {
+  id: number;
+  name: string;
+  score: number;
+}

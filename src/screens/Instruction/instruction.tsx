@@ -13,52 +13,37 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const { state, dispatch } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
-  const [counter, setCounter] = useState(0);
 
   const getDeck = async (query: string) => {
     try {
       let cards = await apiCall(query);
       let { card } = cards.data;
-      for (let j = 0; j < card.length; j++) {
-        dispatch({
-          type: "ADD_CARD_TO_DECK",
-          payload: card[j],
-        });
-      }
-      setCounter(counter + 1);
+      let newDeck = await shuffle(card);
+      newDeck = await shuffle(newDeck);
+      newDeck = newDeck.slice(0, state.cardCount);
+      dispatch({
+        type: "SET_DECK",
+        payload: newDeck,
+      });
     } catch (err) {
       alert(err);
     }
-  };
-
-  const shuffleUp = async () => {
-    let newDeck = await shuffle(state.deck);
-    newDeck = await shuffle(state.deck);
-    await dispatch({
-      type: "SHUFFLED_DECK",
-      payload: newDeck,
-    });
-  };
-
-  const limitDeck = async () => {
-    await dispatch({ type: "LIMIT_DECK" });
   };
 
   useEffect(() => {
     state.roundCount++;
     if (state.roundCount === 1) {
     }
-    for (let i = 0; i < state.selectedCardpacks.length; i++) {
-      let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
-      getDeck(cardsQuery);
-    }
+    let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
+    getDeck(cardsQuery);
+
+    dispatch({
+      type: "SET_ACTIVE_PLAYER",
+      payload: state.team1[0],
+    });
 
     setRule(state.roundCount);
   }, []);
-
-  useEffect(() => {
-    shuffleUp().then(() => limitDeck());
-  }, [counter]);
 
   const setRule = (round: number) => {
     if (round === 1) {
@@ -85,7 +70,9 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={instructionStyles.playerRulesContainer}>
           <View style={instructionStyles.playerNameContainer}>
-            <Text style={instructionStyles.playerName}>Player Turn</Text>
+            <Text
+              style={instructionStyles.playerName}
+            >{`${state.activePlayer.name}`}</Text>
           </View>
           <View style={instructionStyles.rulesContainer}>
             <Text style={instructionStyles.rulesTitle}>You Can...</Text>

@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Pressable, Image, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Image,
+  ScrollView,
+  TextInput,
+} from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
@@ -11,11 +18,10 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
-  const [playtime, setPlaytime] = useState(45);
 
   useEffect(() => {
     let packs: Cardpack[] = [];
-    let id = [1, 3, 7];
+    let id = [1, 2, 3];
     for (let i = 0; i < id.length; i++) {
       let pack = state.cardpacks.filter(
         (cardpack: Cardpack) => cardpack.id === id[i]
@@ -24,19 +30,6 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
     }
     setCardpacks(packs);
   }, []);
-
-  useEffect(() => {
-    let perTurn = Math.floor(
-      ((state.team1.length + state.team2.length) * state.cardCount) / 12
-    );
-    setPlaytime(perTurn);
-    dispatch({
-      type: "SET_TURN_TIME",
-      payload: Math.floor(
-        (state.cardCount / (state.team1.length + state.team2.length)) * 12
-      ),
-    });
-  }, [state.cardCount]);
 
   const changeSelected = (id: any) => {
     if (state.selectedCardpacks.includes(id)) {
@@ -51,6 +44,22 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
         payload: id,
       });
     }
+  };
+
+  const handleTurnTimeChange = (text: string) => {
+    console.log(text);
+    if (+text < 0) {
+      alert("Number must be positive");
+      return;
+    }
+    if (text.includes("-") || text.includes(",")) {
+      alert("Not a number");
+      return;
+    }
+    dispatch({
+      type: "SET_TURN_TIME",
+      payload: +text,
+    });
   };
 
   return (
@@ -139,12 +148,17 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
           </View>
         </View>
         <View style={cardpackStyles.playtimeContainer}>
-          <Text>{`~ ${playtime} Minutes`}</Text>
+          <Text>{`~ ${state.cardCount} Minutes`}</Text>
         </View>
       </View>
       <View style={cardpackStyles.secondsPerTurnContainer}>
         <View style={cardpackStyles.secondsCounter}>
-          <Text style={cardpackStyles.textInput}>{state.turnTime}</Text>
+          <TextInput
+            keyboardType="numeric"
+            style={cardpackStyles.textInput}
+            onChangeText={(text) => handleTurnTimeChange(text)}
+            value={state.turnTime.toString()}
+          />
           <Text style={cardpackStyles.secondTurnsText}>second turns</Text>
         </View>
         <Pressable
