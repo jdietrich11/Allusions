@@ -15,7 +15,7 @@ const FastRulesScreen: React.FC<IStackScreenProps> = (props) => {
       <Header name={name} navigation={navigation} route={route} />
       <View style={fastRulesStyles.rulesContainer}>
         {rulesData.map((ruleGroup) => (
-          <View style={fastRulesStyles.roundContainer}>
+          <View key={ruleGroup.id} style={fastRulesStyles.roundContainer}>
             <Text
               style={fastRulesStyles.roundTitleText}
             >{`Round ${ruleGroup.id}`}</Text>
