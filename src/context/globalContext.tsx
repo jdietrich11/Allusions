@@ -24,6 +24,7 @@ export const GlobalContext = createContext<{
   increaseRoundCount: () => void;
   setCardpacks: (cardpacks: Cardpack[]) => void;
   setActivePlayer: (player: Player) => void;
+  clearTeams: () => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -41,6 +42,7 @@ export const GlobalContext = createContext<{
   increaseRoundCount: () => {},
   setCardpacks: () => {},
   setActivePlayer: () => {},
+  clearTeams: () => {},
 });
 
 // provider component
@@ -64,6 +66,13 @@ export const GlobalProvider = (props: ProviderProps) => {
       ...state,
       team1: state.team1.filter((obj) => obj.id !== id),
       team2: state.team2.filter((obj) => obj.id !== id),
+    });
+  };
+  const clearTeams = () => {
+    setState({
+      ...state,
+      team1: [],
+      team2: [],
     });
   };
   const selectCardpack = (id: number) => {
@@ -164,6 +173,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     increaseRoundCount,
     setCardpacks,
     setActivePlayer,
+    clearTeams,
   };
 
   return (

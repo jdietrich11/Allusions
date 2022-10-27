@@ -8,7 +8,7 @@ import endGameStyles from "./endGame.styles";
 
 const EndGameScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
 
   return (
     <View style={endGameStyles.endGameContainer}>

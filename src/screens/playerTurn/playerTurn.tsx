@@ -7,7 +7,7 @@ import playerTurnStyles from "./playerTurn.styles";
 import { Card } from "../../helper/interfaces/interfaces";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
   const { navigation } = props;
   const [timer, setTimer] = useState(state.turnTime);
   const [activeCard, setActiveCard] = useState<Card>();

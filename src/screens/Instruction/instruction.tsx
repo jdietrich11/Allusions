@@ -11,7 +11,7 @@ import instructionStyles from "./instruction.styles";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, setDeck } = useContext(GlobalContext);
+  const { state, setDeck, setActivePlayer } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
 
   const getDeck = async (query: string) => {
@@ -21,7 +21,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       let newDeck = await shuffle(card);
       newDeck = await shuffle(newDeck);
       newDeck = newDeck.slice(0, state.cardCount);
-      setDeck(["newDeck"]);
+      setDeck(newDeck);
     } catch (err) {
       alert(err);
     }
@@ -34,10 +34,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
     let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
     getDeck(cardsQuery);
 
-    dispatch({
-      type: "SET_ACTIVE_PLAYER",
-      payload: state.team1[0],
-    });
+    setActivePlayer(state.team1[0]);
 
     setRule(state.roundCount);
   }, []);
@@ -103,4 +100,3 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
 };
 
 export default InstructionScreen;
-//{state.deck.length > 0 ? state.deck.length : ""}

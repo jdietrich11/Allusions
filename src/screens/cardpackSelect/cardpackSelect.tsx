@@ -15,7 +15,14 @@ import { Cardpack } from "../../helper/interfaces/interfaces";
 import cardpackStyles from "./cardpackSelect.styles";
 
 const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, dispatch } = useContext(GlobalContext);
+  const {
+    state,
+    removeCardpack,
+    selectCardpack,
+    setTurnTime,
+    decreaseCardCount,
+    increaseCardCount,
+  } = useContext(GlobalContext);
   const { navigation } = props;
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
 
@@ -33,16 +40,10 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
 
   const changeSelected = (id: any) => {
     if (state.selectedCardpacks.includes(id)) {
-      dispatch({
-        type: "REMOVE_CARDPACK",
-        payload: id,
-      });
+      removeCardpack(id);
     }
     if (!state.selectedCardpacks.includes(id)) {
-      dispatch({
-        type: "SELECT_CARDPACK",
-        payload: id,
-      });
+      selectCardpack(id);
     }
   };
 
@@ -56,10 +57,7 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
       alert("Not a number");
       return;
     }
-    dispatch({
-      type: "SET_TURN_TIME",
-      payload: +text,
-    });
+    setTurnTime(+text);
   };
 
   return (
@@ -125,7 +123,7 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
           <View style={cardpackStyles.cardCounter}>
             <Pressable
               style={cardpackStyles.cardAdjustmentCounter}
-              onPress={() => dispatch({ type: "DECREASE_CARD_COUNT" })}
+              onPress={() => decreaseCardCount()}
             >
               <Text style={cardpackStyles.cardCounterText}>-</Text>
             </Pressable>
@@ -136,7 +134,7 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
             </View>
             <Pressable
               style={cardpackStyles.cardAdjustmentCounter}
-              onPress={() => dispatch({ type: "INCREASE_CARD_COUNT" })}
+              onPress={() => increaseCardCount()}
             >
               <Text style={cardpackStyles.cardCounterText}>+</Text>
             </Pressable>

@@ -10,29 +10,28 @@ import Header from "../../helper/header/header";
 import teamsStyles from "./teams.styles";
 
 const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state, addToTeam1, addToTeam2, removePlayer, clearTeams } =
+    useContext(GlobalContext);
   const { navigation } = props;
   const [team1Input, setTeam1Input] = useState("");
   const [team2Input, setTeam2Input] = useState("");
 
   useEffect(() => {
     for (let i = 0; i < 4; i++) {
-      dispatch({ type: "ADD_TO_TEAM_1", payload: { id: i, name: `${i}` } });
+      addToTeam1({ id: i, name: `${i}`, score: 0 });
     }
   }, []);
 
   const addTeam1Member = (inp: string) => {
-    dispatch({
-      type: "ADD_TO_TEAM_1",
-      payload: { id: Math.floor(Math.random() * 200), name: inp },
-    });
+    addToTeam1({ id: Math.floor(Math.random() * 200), name: inp, score: 0 });
     setTeam1Input("");
   };
 
   const addTeam2Member = (inp: string) => {
-    dispatch({
-      type: "ADD_TO_TEAM_2",
-      payload: { id: Math.floor(Math.random() * 200) + 200, name: inp },
+    addToTeam2({
+      id: Math.floor(Math.random() * 200) + 200,
+      name: inp,
+      score: 0,
     });
     setTeam2Input("");
   };
@@ -57,29 +56,13 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
     }
 
     players = shufflePlayers(players);
-
-    dispatch({
-      type: "CLEAR_TEAMS",
-    });
+    clearTeams();
     for (let i = 0; i < players.length / 2; i++) {
-      dispatch({
-        type: "ADD_TO_TEAM_1",
-        payload: players[i],
-      });
+      addToTeam1(players[i]);
     }
     for (let j = Math.floor(players.length / 2) + 1; j < players.length; j++) {
-      dispatch({
-        type: "ADD_TO_TEAM_2",
-        payload: players[j],
-      });
+      addToTeam2(players[j]);
     }
-  };
-
-  const removePlayer = (id: number) => {
-    dispatch({
-      type: "REMOVE_PLAYER",
-      payload: id,
-    });
   };
 
   return (
