@@ -16,6 +16,11 @@ TODO
 -- setup turns to work
 -- (DONE)show whose turn it is
 -- (DONE) fix limit deck function
+    // when cardcount === 0 => increase card count???? || when all players have taken a turn => increase card count????
+    // if turn counter / 2 === even shift team 2, if === odd shift team 1
+    // team whose turn it is => active player => team#hasplayed
+    // increase round count only on score screen?
+    // when cardcount === 0 && roundCount === 3 => scoreScreen?
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER
@@ -55,3 +60,6 @@ DO  NOT DO YET
 // FINAL THING TO DO
 styles & animations
 
+QUESTIONS
+// do you want to end the round when every card has been played(not everyonce might have had a turn) or when every person has had a turn(not every card mightve been seen)?
+// do you want to see sthe score screen after every turn, after every round, or just before the endgame?

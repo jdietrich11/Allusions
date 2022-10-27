@@ -29,9 +29,6 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   useEffect(() => {
-    // when cardcount === 0 => increase card count
-    // if turn counter / 2 === even shift team 2, if === odd shift team 1
-    // team whose turn it is => active player => team#hasplayed
     if (state.roundCount === 1) {
       let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
       getDeck(cardsQuery);
