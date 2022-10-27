@@ -17,7 +17,7 @@ export const GlobalContext = createContext<{
   removeCardpack: (id: number) => void;
   increaseCardCount: () => void;
   decreaseCardCount: () => void;
-  reshuffleDeck: () => void;
+  reshuffleDeck: (newDeck: Card[]) => void;
   drawCard: () => void;
   guessedCorrect: (points: number, card: Card) => void;
   setTurnTime: (time: number) => void;
@@ -25,6 +25,7 @@ export const GlobalContext = createContext<{
   setCardpacks: (cardpacks: Cardpack[]) => void;
   setActivePlayer: (player: Player) => void;
   clearTeams: () => void;
+  increaseTurnCounter: () => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -43,6 +44,7 @@ export const GlobalContext = createContext<{
   setCardpacks: () => {},
   setActivePlayer: () => {},
   clearTeams: () => {},
+  increaseTurnCounter: () => {},
 });
 
 // provider component
@@ -92,13 +94,13 @@ export const GlobalProvider = (props: ProviderProps) => {
   const increaseCardCount = () => {
     setState({
       ...state,
-      cardCount: state.cardCount++,
+      cardCount: ++state.cardCount,
     });
   };
   const decreaseCardCount = () => {
     setState({
       ...state,
-      cardCount: state.cardCount--,
+      cardCount: --state.cardCount,
     });
   };
   const setDeck = (newDeck: Card[]) => {
@@ -107,10 +109,10 @@ export const GlobalProvider = (props: ProviderProps) => {
       deck: newDeck,
     });
   };
-  const reshuffleDeck = () => {
+  const reshuffleDeck = (newDeck: Card[]) => {
     setState({
       ...state,
-      deck: state.discardPile,
+      deck: newDeck,
       discardPile: [],
     });
   };
@@ -155,6 +157,12 @@ export const GlobalProvider = (props: ProviderProps) => {
       activePlayer: player,
     });
   };
+  const increaseTurnCounter = () => {
+    setState({
+      ...state,
+      turnCounter: ++state.turnCounter,
+    });
+  };
 
   const value = {
     state,
@@ -174,6 +182,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     setCardpacks,
     setActivePlayer,
     clearTeams,
+    increaseTurnCounter,
   };
 
   return (

@@ -11,7 +11,8 @@ import instructionStyles from "./instruction.styles";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, setDeck, setActivePlayer } = useContext(GlobalContext);
+  const { state, setDeck, setActivePlayer, increaseRoundCount, reshuffleDeck } =
+    useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
 
   const getDeck = async (query: string) => {
@@ -19,7 +20,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       let cards = await apiCall(query);
       let { card } = cards.data;
       let newDeck = await shuffle(card);
-      newDeck = await shuffle(newDeck);
+      newDeck = shuffle(newDeck);
       newDeck = newDeck.slice(0, state.cardCount);
       setDeck(newDeck);
     } catch (err) {
@@ -28,15 +29,26 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   useEffect(() => {
-    state.roundCount++;
+    // when cardcount === 0 => increase card count
+    // if turn counter / 2 === even shift team 2, if === odd shift team 1
+    // team whose turn it is => active player => team#hasplayed
     if (state.roundCount === 1) {
+      let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
+      getDeck(cardsQuery);
+      setRule(state.roundCount);
+      return;
     }
-    let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
-    getDeck(cardsQuery);
+    if (state.roundCount === 2 || state.roundCount === 3) {
+      // shuffle has played teams to normal teams again
+      let newDeck = state.discardPile;
+      newDeck = shuffle(newDeck);
+      newDeck = shuffle(newDeck);
+      reshuffleDeck(newDeck);
+      setRule(state.roundCount);
+      return;
+    }
 
     setActivePlayer(state.team1[0]);
-
-    setRule(state.roundCount);
   }, []);
 
   const setRule = (round: number) => {

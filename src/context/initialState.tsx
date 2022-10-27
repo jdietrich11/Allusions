@@ -2,9 +2,11 @@ import { Card, Cardpack, Player } from "../helper/interfaces/interfaces";
 
 export interface AppState {
   team1: Player[];
+  team1HasPlayed: Player[];
   team1Score: number;
   team1RoundWins: number;
   team2: Player[];
+  team2HasPlayed: Player[];
   team2Score: number;
   team2RoundWins: number;
   cardpacks: Cardpack[];
@@ -23,21 +25,24 @@ export interface AppState {
   discardPile: Card[];
   activeCard: Card;
   activePlayer: Player;
+  turnCounter: number;
 }
 
 // initial state
 export const initialState: AppState = {
   team1: [],
+  team1HasPlayed: [],
   team1Score: 0,
   team1RoundWins: 0,
   team2: [],
+  team2HasPlayed: [],
   team2Score: 0,
   team2RoundWins: 0,
   cardpacks: [],
   selectedCardpacks: [],
   turnTime: 60,
   cardCount: 60,
-  roundCount: 0,
+  roundCount: 1,
   round1MVP: "",
   round2MVP: "",
   round3MVP: "",
@@ -59,4 +64,5 @@ export const initialState: AppState = {
     name: "",
     score: 0,
   },
+  turnCounter: 0,
 };

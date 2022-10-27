@@ -48,7 +48,6 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   const handleTurnTimeChange = (text: string) => {
-    console.log(text);
     if (+text < 0) {
       alert("Number must be positive");
       return;
