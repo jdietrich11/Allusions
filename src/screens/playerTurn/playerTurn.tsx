@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 
 import { GlobalContext } from "../../context/globalContext";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import playerTurnStyles from "./playerTurn.styles";
+import { Card } from "../../helper/interfaces/interfaces";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext);
   const { navigation } = props;
   const [timer, setTimer] = useState(state.turnTime);
+  const [activeCard, setActiveCard] = useState<Card>();
 
   const tickTimer = () => {
     setTimeout(() => {
@@ -20,6 +22,10 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
       }
     }, 1000);
   };
+
+  useEffect(() => {
+    setActiveCard(state.deck[0]);
+  }, []);
 
   useEffect(() => {
     tickTimer();
@@ -35,15 +41,21 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
           <Text style={playerTurnStyles.areaText}>Skip</Text>
         </View>
         <View style={playerTurnStyles.cardContainer}>
-          <View style={playerTurnStyles.cardImage}></View>
+          <View style={playerTurnStyles.cardImage}>
+            <Image source={{ uri: activeCard?.image_url }} />
+          </View>
           <View style={playerTurnStyles.cardTitle}>
-            <Text style={playerTurnStyles.cardTitleText}>Kevin James</Text>
+            <Text style={playerTurnStyles.cardTitleText}>
+              {activeCard?.card_name}
+            </Text>
           </View>
           <View style={playerTurnStyles.cardDescription}>
             <Text style={playerTurnStyles.cardDescriptionText}>
-              star of paul blart mall cop, king of queens, and here come's the
-              boom
+              {activeCard?.card_hint}
             </Text>
+          </View>
+          <View>
+            <Text>{activeCard?.point_value}</Text>
           </View>
         </View>
         <View style={playerTurnStyles.deckContainer}>

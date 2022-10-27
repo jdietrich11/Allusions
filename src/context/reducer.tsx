@@ -69,16 +69,6 @@ export const globalReducer = (state: AppState, action: any) => {
         ...state,
         deck: state.deck.slice(0, state.cardCount),
       };
-    case "DRAW_CARD":
-      return {
-        ...state,
-        activeCard: state.deck[Math.floor(Math.random() * state.deck.length)],
-      };
-    case "GUESSED_CORRECT":
-      return {
-        ...state,
-        discardPile: [...state.discardPile, state.activeCard],
-      };
     case "SET_TURN_TIME":
       return {
         ...state,

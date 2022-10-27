@@ -4,7 +4,7 @@ export interface Teams {
 }
 
 export interface Cardpack {
-  id: any;
+  id: number;
   cardpack_name: string;
   image_url: string;
   price: number;

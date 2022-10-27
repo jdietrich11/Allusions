@@ -20,6 +20,5 @@ export const initialState = {
   fastestRightAnswer: "",
   deck: [],
   discardPile: [],
-  activeCard: {},
   user: {},
 };
