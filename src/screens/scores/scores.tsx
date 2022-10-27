@@ -16,11 +16,9 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
       if (state.roundCount === 1 || state.roundCount === 2) {
         dispatch({ type: "INCREASE_ROUND_COUNT" });
         navigation.navigate("instruction");
-        console.log("instruction");
         return;
       }
       if (state.roundCount === 3) {
-        console.log("endgame");
         navigation.navigate("endGame");
         return;
       }
