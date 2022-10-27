@@ -11,7 +11,7 @@ import instructionStyles from "./instruction.styles";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state, setDeck } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
 
   const getDeck = async (query: string) => {
@@ -21,10 +21,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       let newDeck = await shuffle(card);
       newDeck = await shuffle(newDeck);
       newDeck = newDeck.slice(0, state.cardCount);
-      dispatch({
-        type: "SET_DECK",
-        payload: newDeck,
-      });
+      setDeck(["newDeck"]);
     } catch (err) {
       alert(err);
     }

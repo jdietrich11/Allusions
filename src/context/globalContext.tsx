@@ -1,22 +1,173 @@
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { initialState, AppState } from "./initialState";
+import { Card, Player, Cardpack } from "../helper/interfaces/interfaces";
 
-import { Action, ProviderProps } from "./types";
-import { globalReducer } from "./reducer";
-import { initialState } from "./initialState";
-export type AppState = typeof initialState;
+export interface ProviderProps {
+  children: React.ReactNode;
+}
 
 // create the context
 export const GlobalContext = createContext<{
   state: AppState;
-  dispatch: React.Dispatch<Action>;
-}>({ state: initialState, dispatch: () => {} });
+  setDeck: (newDecK: Card[]) => void;
+  addToTeam1: (player: Player) => void;
+  addToTeam2: (player: Player) => void;
+  removePlayer: (id: number) => void;
+  selectCardpack: (id: number) => void;
+  removeCardpack: (id: number) => void;
+  increaseCardCount: () => void;
+  decreaseCardCount: () => void;
+  reshuffleDeck: () => void;
+  drawCard: () => void;
+  guessedCorrect: (points: number, card: Card) => void;
+  setTurnTime: (time: number) => void;
+  increaseRoundCount: () => void;
+  setCardpacks: (cardpacks: Cardpack[]) => void;
+  setActivePlayer: (player: Player) => void;
+}>({
+  state: initialState,
+  setDeck: () => {},
+  addToTeam1: () => {},
+  addToTeam2: () => {},
+  removePlayer: () => {},
+  selectCardpack: () => {},
+  removeCardpack: () => {},
+  increaseCardCount: () => {},
+  decreaseCardCount: () => {},
+  reshuffleDeck: () => {},
+  drawCard: () => {},
+  guessedCorrect: () => {},
+  setTurnTime: () => {},
+  increaseRoundCount: () => {},
+  setCardpacks: () => {},
+  setActivePlayer: () => {},
+});
 
 // provider component
 export const GlobalProvider = (props: ProviderProps) => {
-  const [state, dispatch] = useReducer(globalReducer, initialState);
+  const [state, setState] = useState<AppState>(initialState);
+
+  const addToTeam1 = (player: Player) => {
+    setState({
+      ...state,
+      team1: [...state.team1, player],
+    });
+  };
+  const addToTeam2 = (player: Player) => {
+    setState({
+      ...state,
+      team1: [...state.team1, player],
+    });
+  };
+  const removePlayer = (id: number) => {
+    setState({
+      ...state,
+      team1: state.team1.filter((obj) => obj.id !== id),
+      team2: state.team2.filter((obj) => obj.id !== id),
+    });
+  };
+  const selectCardpack = (id: number) => {
+    setState({
+      ...state,
+      selectedCardpacks: [...state.selectedCardpacks, id],
+    });
+  };
+  const removeCardpack = (id: number) => {
+    setState({
+      ...state,
+      selectedCardpacks: state.selectedCardpacks.filter(
+        (packId) => packId !== id
+      ),
+    });
+  };
+  const increaseCardCount = () => {
+    setState({
+      ...state,
+      cardCount: state.cardCount++,
+    });
+  };
+  const decreaseCardCount = () => {
+    setState({
+      ...state,
+      cardCount: state.cardCount--,
+    });
+  };
+  const setDeck = (newDeck: Card[]) => {
+    setState({
+      ...state,
+      deck: newDeck,
+    });
+  };
+  const reshuffleDeck = () => {
+    setState({
+      ...state,
+      deck: state.discardPile,
+      discardPile: [],
+    });
+  };
+  const drawCard = () => {
+    setState({
+      ...state,
+      activeCard: state.deck[Math.floor(Math.random() * state.deck.length)],
+    });
+  };
+  const guessedCorrect = (points: number, card: Card) => {
+    setState({
+      ...state,
+      activePlayer: {
+        id: state.activePlayer.id,
+        name: state.activePlayer.name,
+        score: state.activePlayer.score + points,
+      },
+      discardPile: [...state.discardPile, card],
+    });
+  };
+  const setTurnTime = (time: number) => {
+    setState({
+      ...state,
+      turnTime: time,
+    });
+  };
+  const increaseRoundCount = () => {
+    setState({
+      ...state,
+      roundCount: state.roundCount++,
+    });
+  };
+  const setCardpacks = (cardpacks: Cardpack[]) => {
+    setState({
+      ...state,
+      cardpacks: cardpacks,
+    });
+  };
+  const setActivePlayer = (player: Player) => {
+    setState({
+      ...state,
+      activePlayer: player,
+    });
+  };
+
+  const value = {
+    state,
+    setDeck,
+    addToTeam1,
+    addToTeam2,
+    removePlayer,
+    selectCardpack,
+    removeCardpack,
+    increaseCardCount,
+    decreaseCardCount,
+    reshuffleDeck,
+    drawCard,
+    guessedCorrect,
+    setTurnTime,
+    increaseRoundCount,
+    setCardpacks,
+    setActivePlayer,
+  };
 
   return (
-    <GlobalContext.Provider value={{ state, dispatch }}>
+    <GlobalContext.Provider value={value}>
       {props.children}
     </GlobalContext.Provider>
   );

@@ -6,13 +6,16 @@ TODO
 -- (DONE) remove player functionality
 -- (DONE) Take into Account of ODD number of players for randomize function
 
+-- remove auto teams
+
 // CARDPACK PAGE
 -- STYLING
 
 // INSTRUCTION PAGE
 -- Make the round counter work for information page
--- show whose turn it is
--- fix limit deck function
+-- setup turns to work
+-- (DONE)show whose turn it is
+-- (DONE) fix limit deck function
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER
