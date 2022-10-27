@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import React, { View, Text, Pressable } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, Pressable } from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";

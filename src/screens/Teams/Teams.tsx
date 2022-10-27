@@ -4,7 +4,7 @@ import { View, Text, Pressable, TextInput } from "react-native";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import { shufflePlayers } from "../../helper/shuffle/shuffle";
-import { Teams } from "../../helper/interfaces/interfaces";
+import { Player } from "../../helper/interfaces/interfaces";
 import Header from "../../helper/header/header";
 
 import teamsStyles from "./teams.styles";
@@ -46,7 +46,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   const randomizeTeams = () => {
-    let players: Teams[] = [];
+    let players: Player[] = [];
 
     for (let i = 0; i < state.team1.length; i++) {
       players = [...players, state.team1[i]];
@@ -74,7 +74,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={teamsStyles.playersContainer}>
           {state.team1
-            ? state.team1.map((teamMember: Teams) => (
+            ? state.team1.map((teamMember: Player) => (
                 <View style={teamsStyles.player} key={teamMember.id}>
                   <Text>{teamMember.name}</Text>
                   <Pressable
@@ -103,7 +103,7 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={teamsStyles.playersContainer}>
           {state.team2
-            ? state.team2.map((teamMember: Teams) => (
+            ? state.team2.map((teamMember: Player) => (
                 <View style={teamsStyles.player} key={teamMember.id}>
                   <Text>{teamMember.name}</Text>
                   <Pressable
