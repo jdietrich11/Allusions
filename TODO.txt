@@ -19,7 +19,7 @@ TODO
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER
--- deck counter
+-- (DONE) deck counter
 -- turn counter
 -- draw card mechanism
 
@@ -31,8 +31,8 @@ TODO
 // ENDGAME PAGE
 
 // FAST RULES PAGE
--- show rules clearly for each of the 3 rounds
--- header at top
+-- (DONE) show rules clearly for each of the 3 rounds
+-- (DONE) header at top
 -- button on bottom to nav to teams page
 
 // BROWSE CARDPACK PAGE
@@ -44,6 +44,7 @@ TODO
 -- MUST login BEFORE checkout
 
 // settings page
+DO  NOT DO YET
 -- login 
 -- sign up 
 -- setup firestore
@@ -53,5 +54,4 @@ TODO
 
 // FINAL THING TO DO
 styles & animations
-tsc errors fix
 
