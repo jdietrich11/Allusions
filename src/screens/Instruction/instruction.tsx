@@ -4,15 +4,21 @@ import { Text, View, Pressable } from "react-native";
 import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
-import { shuffle } from "../../helper/shuffle/shuffle";
+import { shuffle, shufflePlayers } from "../../helper/shuffle/shuffle";
 import { rulesData } from "../../data/rules";
 
 import instructionStyles from "./instruction.styles";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, setDeck, setActivePlayer, increaseRoundCount, reshuffleDeck } =
-    useContext(GlobalContext);
+  const {
+    state,
+    setDeck,
+    setActivePlayer,
+    increaseRoundCount,
+    reshuffleDeck,
+    increaseTurnCounter,
+  } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
 
   const getDeck = async (query: string) => {
@@ -27,6 +33,34 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       alert(err);
     }
   };
+
+  useEffect(() => {
+    increaseTurnCounter();
+    if (state.turnCounter % 2 === 1) {
+      if (state.team1.length === 0) {
+        let players = state.team1HasPlayed;
+        players = shufflePlayers(players);
+        players = shufflePlayers(players);
+        state.team1 = players;
+      }
+      state.activePlayer = state.team1[0];
+      state.team1HasPlayed = [...state.team1HasPlayed, state.team1[0]];
+      state.team1.shift();
+      return;
+    }
+    if (state.turnCounter % 2 === 0) {
+      if (state.team2.length === 0) {
+        let players = state.team2HasPlayed;
+        players = shufflePlayers(players);
+        players = shufflePlayers(players);
+        state.team2 = players;
+      }
+      state.activePlayer = state.team2[0];
+      state.team2HasPlayed = [...state.team2HasPlayed, state.team2[0]];
+      state.team2.shift();
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     if (state.roundCount === 1) {
@@ -44,8 +78,6 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       setRule(state.roundCount);
       return;
     }
-
-    setActivePlayer(state.team1[0]);
   }, []);
 
   const setRule = (round: number) => {

@@ -22,6 +22,7 @@ export interface AppState {
   bestHandAndBodyFlapper: string;
   fastestRightAnswer: string;
   deck: Card[];
+  skippedPile: Card[];
   discardPile: Card[];
   activeCard: Card;
   activePlayer: Player;
@@ -52,6 +53,7 @@ export const initialState: AppState = {
   fastestRightAnswer: "",
   deck: [],
   discardPile: [],
+  skippedPile: [],
   activeCard: {
     id: 0,
     card_name: "",

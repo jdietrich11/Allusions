@@ -16,12 +16,6 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
   const [team1Input, setTeam1Input] = useState("");
   const [team2Input, setTeam2Input] = useState("");
 
-  useEffect(() => {
-    for (let i = 0; i < 4; i++) {
-      addToTeam1({ id: i, name: `${i}`, score: 0 });
-    }
-  }, []);
-
   const addTeam1Member = (inp: string) => {
     addToTeam1({ id: Math.floor(Math.random() * 200), name: inp, score: 0 });
     setTeam1Input("");

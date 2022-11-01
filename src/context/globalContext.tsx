@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { initialState, AppState } from "./initialState";
 import { Card, Player, Cardpack } from "../helper/interfaces/interfaces";
+import { shuffle } from "../helper/shuffle/shuffle";
 
 export interface ProviderProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export const GlobalContext = createContext<{
   setActivePlayer: (player: Player) => void;
   clearTeams: () => void;
   increaseTurnCounter: () => void;
+  shuffleSkipped: () => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -45,6 +47,7 @@ export const GlobalContext = createContext<{
   setActivePlayer: () => {},
   clearTeams: () => {},
   increaseTurnCounter: () => {},
+  shuffleSkipped: () => {},
 });
 
 // provider component
@@ -60,7 +63,7 @@ export const GlobalProvider = (props: ProviderProps) => {
   const addToTeam2 = (player: Player) => {
     setState({
       ...state,
-      team1: [...state.team1, player],
+      team2: [...state.team2, player],
     });
   };
   const removePlayer = (id: number) => {
@@ -163,6 +166,15 @@ export const GlobalProvider = (props: ProviderProps) => {
       turnCounter: ++state.turnCounter,
     });
   };
+  const shuffleSkipped = () => {
+    let tempDeck = state.skippedPile;
+    tempDeck = shuffle(tempDeck);
+    tempDeck = shuffle(tempDeck);
+    setState({
+      ...state,
+      deck: tempDeck,
+    });
+  };
 
   const value = {
     state,
@@ -183,6 +195,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     setActivePlayer,
     clearTeams,
     increaseTurnCounter,
+    shuffleSkipped,
   };
 
   return (
