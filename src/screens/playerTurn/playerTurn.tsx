@@ -33,10 +33,10 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   });
 
   const gesture = Gesture.Pan()
-    // .onBegin(() => {
-    //   isPressed.value = true;
-    //   console.log("click");
-    // })
+    .onBegin(() => {
+      isPressed.value = true;
+      console.log("click");
+    })
     .onUpdate((e) => {
       offset.value = {
         x: e.translationX + start.value.x,
@@ -48,10 +48,10 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
         x: offset.value.x,
         y: offset.value.y,
       };
+    })
+    .onFinalize(() => {
+      isPressed.value = false;
     });
-  // .onFinalize(() => {
-  //   isPressed.value = false;
-  // });
 
   // const tickTimer = () => {
   //   setTimeout(() => {
