@@ -4,61 +4,81 @@ import { Text, View, Pressable } from "react-native";
 import apiCall from "../../helper/APi/api";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
-import { shuffle } from "../../helper/shuffle/shuffle";
+import { shuffle, shufflePlayers } from "../../helper/shuffle/shuffle";
 import { rulesData } from "../../data/rules";
 
 import instructionStyles from "./instruction.styles";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, dispatch } = useContext(GlobalContext);
+  const {
+    state,
+    setDeck,
+    setActivePlayer,
+    increaseRoundCount,
+    reshuffleDeck,
+    increaseTurnCounter,
+  } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
-  const [counter, setCounter] = useState(0);
 
   const getDeck = async (query: string) => {
     try {
       let cards = await apiCall(query);
       let { card } = cards.data;
-      for (let j = 0; j < card.length; j++) {
-        dispatch({
-          type: "ADD_CARD_TO_DECK",
-          payload: card[j],
-        });
-      }
-      setCounter(counter + 1);
+      let newDeck = await shuffle(card);
+      newDeck = shuffle(newDeck);
+      newDeck = newDeck.slice(0, state.cardCount);
+      setDeck(newDeck);
     } catch (err) {
       alert(err);
     }
   };
 
-  const shuffleUp = async () => {
-    let newDeck = await shuffle(state.deck);
-    newDeck = await shuffle(state.deck);
-    await dispatch({
-      type: "SHUFFLED_DECK",
-      payload: newDeck,
-    });
-  };
-
-  const limitDeck = async () => {
-    await dispatch({ type: "LIMIT_DECK" });
-  };
-
   useEffect(() => {
-    state.roundCount++;
-    if (state.roundCount === 1) {
+    increaseTurnCounter();
+    if (state.turnCounter % 2 === 1) {
+      if (state.team1.length === 0) {
+        let players = state.team1HasPlayed;
+        players = shufflePlayers(players);
+        players = shufflePlayers(players);
+        state.team1 = players;
+      }
+      state.activePlayer = state.team1[0];
+      state.team1HasPlayed = [...state.team1HasPlayed, state.team1[0]];
+      state.team1.shift();
+      return;
     }
-    for (let i = 0; i < state.selectedCardpacks.length; i++) {
-      let cardsQuery = `card (where: {cardpack_id : {_eq: ${state.selectedCardpacks[i]}}}) { id card_name card_hint point_value image_url}`;
-      getDeck(cardsQuery);
+    if (state.turnCounter % 2 === 0) {
+      if (state.team2.length === 0) {
+        let players = state.team2HasPlayed;
+        players = shufflePlayers(players);
+        players = shufflePlayers(players);
+        state.team2 = players;
+      }
+      state.activePlayer = state.team2[0];
+      state.team2HasPlayed = [...state.team2HasPlayed, state.team2[0]];
+      state.team2.shift();
+      return;
     }
-
-    setRule(state.roundCount);
   }, []);
 
   useEffect(() => {
-    shuffleUp().then(() => limitDeck());
-  }, [counter]);
+    if (state.roundCount === 1) {
+      let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
+      getDeck(cardsQuery);
+      setRule(state.roundCount);
+      return;
+    }
+    if (state.roundCount === 2 || state.roundCount === 3) {
+      // shuffle has played teams to normal teams again
+      let newDeck = state.discardPile;
+      newDeck = shuffle(newDeck);
+      newDeck = shuffle(newDeck);
+      reshuffleDeck(newDeck);
+      setRule(state.roundCount);
+      return;
+    }
+  }, []);
 
   const setRule = (round: number) => {
     if (round === 1) {
@@ -85,7 +105,9 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         </View>
         <View style={instructionStyles.playerRulesContainer}>
           <View style={instructionStyles.playerNameContainer}>
-            <Text style={instructionStyles.playerName}>Player Turn</Text>
+            <Text
+              style={instructionStyles.playerName}
+            >{`${state.activePlayer.name}`}</Text>
           </View>
           <View style={instructionStyles.rulesContainer}>
             <Text style={instructionStyles.rulesTitle}>You Can...</Text>
@@ -119,4 +141,3 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
 };
 
 export default InstructionScreen;
-//{state.deck.length > 0 ? state.deck.length : ""}

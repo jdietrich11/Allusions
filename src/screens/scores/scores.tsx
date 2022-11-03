@@ -7,14 +7,13 @@ import scoreScreenStyles from "./scores.styles";
 
 const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const [round, setRound] = useState(1);
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state, increaseRoundCount } = useContext(GlobalContext);
 
   useEffect(() => {
     setTimeout(() => {
       console.log(state.roundCount);
       if (state.roundCount === 1 || state.roundCount === 2) {
-        dispatch({ type: "INCREASE_ROUND_COUNT" });
+        increaseRoundCount();
         navigation.navigate("instruction");
         return;
       }
@@ -29,7 +28,7 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
     <View style={scoreScreenStyles.scoreScreenContainer}>
       <View style={scoreScreenStyles.roundContainer}>
         <Text style={scoreScreenStyles.roundText}>
-          {"Round " + round + " complete"}
+          {"Round " + state.roundCount + " complete"}
         </Text>
       </View>
       <View style={scoreScreenStyles.teamsContainer}>

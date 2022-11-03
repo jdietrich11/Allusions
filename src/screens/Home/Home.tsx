@@ -9,17 +9,14 @@ import homeStyles from "./Home.styles";
 
 const HomeScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { dispatch } = useContext(GlobalContext);
+  const { setCardpacks } = useContext(GlobalContext);
 
   useEffect(() => {
     const getPacks = async (data: string) => {
       let cardpack = await apiCall(data);
       const { cardpack_list } = await cardpack.data;
-      dispatch({
-        type: "SET_CARDPACKS",
-        payload: cardpack_list,
-      });
-      return cardpack_list;
+      setCardpacks(cardpack_list);
+      return;
     };
 
     let cardpackQuery = `cardpack_list { id cardpack_name image_url price }`;

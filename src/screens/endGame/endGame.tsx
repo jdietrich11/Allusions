@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import React, { View, Text, Pressable } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, Pressable } from "react-native";
 
 import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
@@ -8,7 +8,7 @@ import endGameStyles from "./endGame.styles";
 
 const EndGameScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
 
   return (
     <View style={endGameStyles.endGameContainer}>

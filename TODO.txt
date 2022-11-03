@@ -6,21 +6,32 @@ TODO
 -- (DONE) remove player functionality
 -- (DONE) Take into Account of ODD number of players for randomize function
 
+-- remove auto teams
+
 // CARDPACK PAGE
 -- STYLING
 
 // INSTRUCTION PAGE
 -- Make the round counter work for information page
--- show whose turn it is
--- fix limit deck function
+-- setup turns to work
+-- (DONE)show whose turn it is
+-- (DONE) fix limit deck function
+    // when cardcount === 0 => increase card count???? || when all players have taken a turn => increase card count????
+    // if turn counter / 2 === even shift team 2, if === odd shift team 1
+    // team whose turn it is => active player => team#hasplayed
+    // increase round count only on score screen?
+    // when cardcount === 0 && roundCount === 3 => scoreScreen?
+    // when increaseRound => reset turnCount
+    // when increasing the round shuffle teams from team#hasplayed back into normal team1 & team2
 
 // PLAYER TURN PAGE
 -- GESTURE HANDLER
--- deck counter
+-- (DONE) deck counter
 -- turn counter
 -- draw card mechanism
 
 // ROUND COMPLETED TURN
+-- increase round count
 -- if round 1 or 2 nav to instruction page
 -- if round 1 or 2 increase round counter
 -- if round 3 nav to endgame page
@@ -28,8 +39,8 @@ TODO
 // ENDGAME PAGE
 
 // FAST RULES PAGE
--- show rules clearly for each of the 3 rounds
--- header at top
+-- (DONE) show rules clearly for each of the 3 rounds
+-- (DONE) header at top
 -- button on bottom to nav to teams page
 
 // BROWSE CARDPACK PAGE
@@ -41,6 +52,7 @@ TODO
 -- MUST login BEFORE checkout
 
 // settings page
+DO  NOT DO YET
 -- login 
 -- sign up 
 -- setup firestore
@@ -50,5 +62,13 @@ TODO
 
 // FINAL THING TO DO
 styles & animations
-tsc errors fix
 
+QUESTIONS
+// do you want to end the round when every card has been played(not everyonce might have had a turn) or when every person has had a turn(not every card mightve been seen)?
+after every card has been played
+// do you want to see sthe score screen after every turn, after every round, or just before the endgame?
+after every round
+// do you want the score screen to be on a timer or add a button to move to the next page?
+button
+// do you want to limit the amount of cards a person can go through on their turns?
+no limit

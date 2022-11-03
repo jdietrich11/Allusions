@@ -1,8 +1,3 @@
-export interface Teams {
-  id: number;
-  name: string;
-}
-
 export interface Cardpack {
   id: number;
   cardpack_name: string;
@@ -39,4 +34,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
+}
+
+export interface Player {
+  id: number;
+  name: string;
+  score: number;
 }

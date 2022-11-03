@@ -31,17 +31,22 @@ const playerTurnStyles = StyleSheet.create({
     marginRight: 12,
     borderRadius: 12,
     alignItems: "center",
+    overflow: "hidden",
   },
-  cardImage: {
+  cardImageContainer: {
     flex: 3,
     border: 2,
-    borderWidth: 2,
+    borderWidth: 7,
     marginTop: 12,
     width: "90%",
     borderRadius: 12,
+    overflow: "hidden",
+  },
+  cardImage: {
+    flex: 3,
   },
   cardTitle: {
-    flex: 1,
+    flex: 0.5,
     width: "90%",
     alignItems: "center",
   },
@@ -81,6 +86,21 @@ const playerTurnStyles = StyleSheet.create({
     fontSize: 62,
     textTransform: "uppercase",
     alignSelf: "center",
+  },
+  pointValueContainer: {
+    position: "absolute",
+    bottom: -2,
+    right: -2,
+    justifyContent: "flex-end",
+    height: 50,
+    width: 50,
+    borderWidth: 2,
+    borderTopLeftRadius: 1000000000,
+    backgroundColor: "red",
+  },
+  pointValue: {
+    marginLeft: 25,
+    fontSize: 22,
   },
 });
 
