@@ -21,6 +21,7 @@ const activeCardStyles = StyleSheet.create({
   },
   cardImage: {
     flex: 3,
+    resizeMode: "stretch",
   },
   cardTitle: {
     flex: 0.5,
