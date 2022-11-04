@@ -18,10 +18,9 @@ import playerTurnStyles from "./playerTurn.styles";
 import { Card } from "../../helper/interfaces/interfaces";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state } = useContext(GlobalContext);
+  const { state, drawCard } = useContext(GlobalContext);
   const { navigation } = props;
   const [timer, setTimer] = useState(state.turnTime);
-  const [activeCard, setActiveCard] = useState<Card>();
 
   const isPressed = useSharedValue(false);
   const start = useSharedValue({ x: 0, y: 0 });
@@ -37,40 +36,61 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
     };
   });
 
-  const flingGesture = Gesture.Fling()
-    .direction(Directions.LEFT | Directions.DOWN)
-    .onBegin((e) => {
-      console.log(e);
+  const resetLocation = () => {
+    "worklet";
+    offset.value = {
+      x: 0,
+      y: 0,
+    };
+  };
+
+  const drawACard = () => {
+    "worklet";
+    let card: Card = state.deck.shift();
+    drawCard(card);
+  };
+
+  const flingGestureDown = Gesture.Fling()
+    .direction(Directions.DOWN)
+    .onBegin((e) => {})
+    .onEnd(() => {
+      // add score to active user
+      state.activePlayer.score =
+        state.activePlayer.score +
+        state.activeCard?.point_value * state.roundCount;
+      // animate card to bottom
+      offset.value = {
+        x: 0,
+        y: 700,
+      };
+      console.log("down end");
+    })
+    .onFinalize(() => {
+      "worklet";
+      // resetLocation();
+      // draw new card
+      drawACard();
+      console.log("down finalize");
     });
 
-  const gesture = Gesture.Pan()
-    .onBegin(() => {
-      isPressed.value = true;
-    })
-    .onUpdate((e) => {
-      if (e.velocityX - start.value.x > e.velocityY - start.value.y) {
-        console.log("velocityX");
-        offset.value = {
-          x: e.translationX - start.value.x,
-          y: 0,
-        };
-      }
-      if (e.velocityX - start.value.x < e.velocityY - start.value.y) {
-        console.log("velocityY");
-        offset.value = {
-          x: 0,
-          y: e.translationY - start.value.y,
-        };
-      }
-    })
+  const flingGestureLeft = Gesture.Fling()
+    .direction(Directions.LEFT)
+    .onBegin((e) => {})
     .onEnd(() => {
-      start.value = {
-        x: 0,
+      // add card to skip pile
+
+      // animate card to left
+      offset.value = {
+        x: -100,
         y: 0,
       };
     })
     .onFinalize(() => {
-      isPressed.value = false;
+      "worklet";
+      // resetLocation();
+      // draw new card
+      drawACard();
+      console.log("left");
     });
 
   // const tickTimer = () => {
@@ -85,7 +105,7 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   // };
 
   useEffect(() => {
-    setActiveCard(state.deck[0]);
+    drawACard();
   }, []);
 
   // useEffect(() => {
@@ -101,35 +121,37 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
         <View style={playerTurnStyles.skipContainer}>
           <Text style={playerTurnStyles.areaText}>Skip</Text>
         </View>
-        <GestureDetector gesture={flingGesture}>
-          <Animated.View
-            style={[playerTurnStyles.cardContainer, animatedStyles]}
-          >
-            <View style={playerTurnStyles.cardImageContainer}>
-              <Image
-                style={playerTurnStyles.cardImage}
-                source={{ uri: activeCard?.image_url }}
-              />
-            </View>
-            <View style={playerTurnStyles.cardTitle}>
-              <Text style={playerTurnStyles.cardTitleText}>
-                {activeCard?.card_name}
-              </Text>
-            </View>
-            <View style={playerTurnStyles.cardDescription}>
-              <Text
-                adjustsFontSizeToFit={true}
-                style={playerTurnStyles.cardDescriptionText}
-              >
-                {activeCard?.card_hint}
-              </Text>
-            </View>
-            <View style={playerTurnStyles.pointValueContainer}>
-              <Text style={playerTurnStyles.pointValue}>
-                {activeCard?.point_value}
-              </Text>
-            </View>
-          </Animated.View>
+        <GestureDetector gesture={flingGestureDown}>
+          <GestureDetector gesture={flingGestureLeft}>
+            <Animated.View
+              style={[playerTurnStyles.cardContainer, animatedStyles]}
+            >
+              <View style={playerTurnStyles.cardImageContainer}>
+                <Image
+                  style={playerTurnStyles.cardImage}
+                  source={{ uri: state.activeCard?.image_url }}
+                />
+              </View>
+              <View style={playerTurnStyles.cardTitle}>
+                <Text style={playerTurnStyles.cardTitleText}>
+                  {state.activeCard?.card_name}
+                </Text>
+              </View>
+              <View style={playerTurnStyles.cardDescription}>
+                <Text
+                  adjustsFontSizeToFit={true}
+                  style={playerTurnStyles.cardDescriptionText}
+                >
+                  {state.activeCard?.card_hint}
+                </Text>
+              </View>
+              <View style={playerTurnStyles.pointValueContainer}>
+                <Text style={playerTurnStyles.pointValue}>
+                  {state.activeCard?.point_value}
+                </Text>
+              </View>
+            </Animated.View>
+          </GestureDetector>
         </GestureDetector>
         <View style={playerTurnStyles.deckContainer}>
           <Text style={playerTurnStyles.areaText}>Deck</Text>

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { initialState, AppState } from "./initialState";
 import { Card, Player, Cardpack } from "../helper/interfaces/interfaces";
 import { shuffle } from "../helper/shuffle/shuffle";
+import { ActionSheetIOS } from "react-native";
 
 export interface ProviderProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export const GlobalContext = createContext<{
   increaseCardCount: () => void;
   decreaseCardCount: () => void;
   reshuffleDeck: (newDeck: Card[]) => void;
-  drawCard: () => void;
+  drawCard: (card: Card) => void;
   guessedCorrect: (points: number, card: Card) => void;
   setTurnTime: (time: number) => void;
   increaseRoundCount: () => void;
@@ -119,10 +120,10 @@ export const GlobalProvider = (props: ProviderProps) => {
       discardPile: [],
     });
   };
-  const drawCard = () => {
+  const drawCard = (card: Card) => {
     setState({
       ...state,
-      activeCard: state.deck[Math.floor(Math.random() * state.deck.length)],
+      activeCard: card,
     });
   };
   const guessedCorrect = (points: number, card: Card) => {
