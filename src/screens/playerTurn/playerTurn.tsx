@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Image } from "react-native";
-import {
-  GestureDetector,
-  Gesture,
-  FlingGestureHandler,
-  Directions,
-} from "react-native-gesture-handler";
+import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -14,11 +10,13 @@ import Animated, {
 
 import { GlobalContext } from "../../context/globalContext";
 import { IStackScreenProps } from "../../library/StackScreenProps";
-import playerTurnStyles from "./playerTurn.styles";
 import { Card } from "../../helper/interfaces/interfaces";
+import DeckArea from "../../helper/deck/deck";
+import SkipArea from "../../helper/skipArea/skipArea";
+import playerTurnStyles from "./playerTurn.styles";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, drawCard } = useContext(GlobalContext);
+  const { state, drawCard, increaseScore } = useContext(GlobalContext);
   const { navigation } = props;
   const [timer, setTimer] = useState(state.turnTime);
 
@@ -45,52 +43,51 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   };
 
   const drawACard = () => {
-    "worklet";
     let card: Card = state.deck.shift();
     drawCard(card);
   };
 
-  const flingGestureDown = Gesture.Fling()
-    .direction(Directions.DOWN)
-    .onBegin((e) => {})
-    .onEnd(() => {
-      // add score to active user
-      state.activePlayer.score =
-        state.activePlayer.score +
-        state.activeCard?.point_value * state.roundCount;
-      // animate card to bottom
+  const gestureHandler = Gesture.Pan()
+    .onBegin(() => {
+      isPressed.value = true;
+    })
+    .onUpdate((e) => {
       offset.value = {
         x: 0,
-        y: 700,
+        y: start.value.y + e.translationY,
       };
-      console.log("down end");
     })
-    .onFinalize(() => {
-      "worklet";
-      // resetLocation();
-      // draw new card
-      drawACard();
-      console.log("down finalize");
-    });
-
-  const flingGestureLeft = Gesture.Fling()
-    .direction(Directions.LEFT)
-    .onBegin((e) => {})
     .onEnd(() => {
-      // add card to skip pile
-
-      // animate card to left
-      offset.value = {
-        x: -100,
-        y: 0,
-      };
+      if (offset.value.y < 0) {
+        // skip
+        state.skippedPile = [...state.skippedPile, state.activeCard];
+        // animate card to top
+        offset.value = {
+          x: 0,
+          y: -500,
+        };
+      }
+      if (offset.value.y > 0) {
+        ("runOnJS");
+        // score
+        // add score to active user
+        let cardPoints = state.activeCard.point_value * state.roundCount;
+        runOnJS(increaseScore)(cardPoints);
+        // animate card to bottom
+        offset.value = {
+          x: 0,
+          y: 500,
+        };
+      }
     })
     .onFinalize(() => {
-      "worklet";
-      // resetLocation();
+      // reset location
+      resetLocation();
+
       // draw new card
-      drawACard();
-      console.log("left");
+      runOnJS(drawACard);
+      isPressed.value = false;
+      console.log(state.deck.length);
     });
 
   // const tickTimer = () => {
@@ -118,44 +115,38 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
         <Text style={playerTurnStyles.timerText}>{timer + " Seconds"}</Text>
       </View>
       <View style={playerTurnStyles.middlePlayArea}>
-        <View style={playerTurnStyles.skipContainer}>
-          <Text style={playerTurnStyles.areaText}>Skip</Text>
-        </View>
-        <GestureDetector gesture={flingGestureDown}>
-          <GestureDetector gesture={flingGestureLeft}>
-            <Animated.View
-              style={[playerTurnStyles.cardContainer, animatedStyles]}
-            >
-              <View style={playerTurnStyles.cardImageContainer}>
-                <Image
-                  style={playerTurnStyles.cardImage}
-                  source={{ uri: state.activeCard?.image_url }}
-                />
-              </View>
-              <View style={playerTurnStyles.cardTitle}>
-                <Text style={playerTurnStyles.cardTitleText}>
-                  {state.activeCard?.card_name}
-                </Text>
-              </View>
-              <View style={playerTurnStyles.cardDescription}>
-                <Text
-                  adjustsFontSizeToFit={true}
-                  style={playerTurnStyles.cardDescriptionText}
-                >
-                  {state.activeCard?.card_hint}
-                </Text>
-              </View>
-              <View style={playerTurnStyles.pointValueContainer}>
-                <Text style={playerTurnStyles.pointValue}>
-                  {state.activeCard?.point_value}
-                </Text>
-              </View>
-            </Animated.View>
-          </GestureDetector>
+        <SkipArea />
+        <GestureDetector gesture={gestureHandler}>
+          <Animated.View
+            style={[playerTurnStyles.cardContainer, animatedStyles]}
+          >
+            <View style={playerTurnStyles.cardImageContainer}>
+              <Image
+                style={playerTurnStyles.cardImage}
+                source={{ uri: state.activeCard?.image_url }}
+              />
+            </View>
+            <View style={playerTurnStyles.cardTitle}>
+              <Text style={playerTurnStyles.cardTitleText}>
+                {state.activeCard?.card_name}
+              </Text>
+            </View>
+            <View style={playerTurnStyles.cardDescription}>
+              <Text
+                adjustsFontSizeToFit={true}
+                style={playerTurnStyles.cardDescriptionText}
+              >
+                {state.activeCard?.card_hint}
+              </Text>
+            </View>
+            <View style={playerTurnStyles.pointValueContainer}>
+              <Text style={playerTurnStyles.pointValue}>
+                {state.activeCard?.point_value}
+              </Text>
+            </View>
+          </Animated.View>
         </GestureDetector>
-        <View style={playerTurnStyles.deckContainer}>
-          <Text style={playerTurnStyles.areaText}>Deck</Text>
-        </View>
+        <DeckArea />
       </View>
       <View style={playerTurnStyles.correctContainer}>
         <Text style={playerTurnStyles.correctText}>Correct</Text>

@@ -6,6 +6,8 @@ import { IStackScreenProps } from "../../library/StackScreenProps";
 import { GlobalContext } from "../../context/globalContext";
 import { shuffle, shufflePlayers } from "../../helper/shuffle/shuffle";
 import { rulesData } from "../../data/rules";
+import SkipArea from "../../helper/skipArea/skipArea";
+import DeckArea from "../../helper/deck/deck";
 
 import instructionStyles from "./instruction.styles";
 
@@ -100,9 +102,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
         >{`${state.turnTime} Seconds`}</Text>
       </View>
       <View style={instructionStyles.playAreaInfo}>
-        <View style={instructionStyles.skipContainer}>
-          <Text style={instructionStyles.skipText}>skip</Text>
-        </View>
+        <SkipArea />
         <View style={instructionStyles.playerRulesContainer}>
           <View style={instructionStyles.playerNameContainer}>
             <Text
@@ -126,12 +126,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
             <Text style={instructionStyles.readyButtonText}>Ready</Text>
           </Pressable>
         </View>
-        <View style={instructionStyles.deckContainer}>
-          <View>
-            <Text>{state.deck.length}</Text>
-          </View>
-          <Text style={instructionStyles.deckText}>deck</Text>
-        </View>
+        <DeckArea />
       </View>
       <View style={instructionStyles.scoreContainer}>
         <Text style={instructionStyles.scoreText}>drag to score</Text>

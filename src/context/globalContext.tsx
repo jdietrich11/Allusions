@@ -29,6 +29,7 @@ export const GlobalContext = createContext<{
   clearTeams: () => void;
   increaseTurnCounter: () => void;
   shuffleSkipped: () => void;
+  increaseScore: (points: number) => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -49,6 +50,7 @@ export const GlobalContext = createContext<{
   clearTeams: () => {},
   increaseTurnCounter: () => {},
   shuffleSkipped: () => {},
+  increaseScore: () => {},
 });
 
 // provider component
@@ -176,6 +178,16 @@ export const GlobalProvider = (props: ProviderProps) => {
       deck: tempDeck,
     });
   };
+  const increaseScore = (points: number) => {
+    setState({
+      ...state,
+      activePlayer: {
+        id: state.activePlayer.id,
+        name: state.activePlayer.name,
+        score: state.activePlayer.score + points,
+      },
+    });
+  };
 
   const value = {
     state,
@@ -197,6 +209,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     clearTeams,
     increaseTurnCounter,
     shuffleSkipped,
+    increaseScore,
   };
 
   return (
