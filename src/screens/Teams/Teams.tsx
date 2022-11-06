@@ -10,16 +10,17 @@ import Header from "../../helper/header/header";
 import teamsStyles from "./teams.styles";
 
 const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, addToTeam1, addToTeam2, removePlayer, clearTeams } =
-    useContext(GlobalContext);
+  const {
+    state,
+    addToTeam1,
+    addToTeam2,
+    removePlayer,
+    clearTeams,
+    setTeam1ActivePlayer,
+  } = useContext(GlobalContext);
   const { navigation } = props;
   const [team1Input, setTeam1Input] = useState("");
   const [team2Input, setTeam2Input] = useState("");
-
-  useEffect(() => {
-    let teams = ["player1", "player2", "player3", "player4"];
-    addToTeam1({ id: Math.random(), name: teams[0], score: 0 });
-  }, []);
 
   const addTeam1Member = (inp: string) => {
     addToTeam1({ id: Math.floor(Math.random() * 200), name: inp, score: 0 });
@@ -37,10 +38,13 @@ const TeamsScreen: React.FC<IStackScreenProps> = (props) => {
 
   const toCardpack = () => {
     if (state.team1.length + state.team2.length > 3) {
+      setTeam1ActivePlayer();
       navigation.navigate("cardpackSelect");
+      return;
     }
     if (state.team1.length + state.team2.length <= 3) {
       alert("Sorry you need at least 4 players");
+      return;
     }
   };
 

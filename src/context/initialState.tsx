@@ -31,17 +31,23 @@ export interface AppState {
 
 // initial state
 export const initialState: AppState = {
-  team1: [],
+  team1: [
+    { name: `player1`, id: 1, score: 0 },
+    { name: `player3`, id: 3, score: 0 },
+  ],
   team1HasPlayed: [],
   team1Score: 0,
   team1RoundWins: 0,
-  team2: [],
+  team2: [
+    { name: `player2`, id: 2, score: 0 },
+    { name: `player4`, id: 4, score: 0 },
+  ],
   team2HasPlayed: [],
   team2Score: 0,
   team2RoundWins: 0,
   cardpacks: [],
   selectedCardpacks: [],
-  turnTime: 60,
+  turnTime: 5,
   cardCount: 60,
   roundCount: 1,
   round1MVP: "",
