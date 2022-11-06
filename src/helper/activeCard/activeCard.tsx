@@ -9,12 +9,13 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { GlobalContext } from "../../context/globalContext";
-import { Card } from "../interfaces/interfaces";
+import { IStackScreenProps } from "../../library/StackScreenProps";
 
 import activeCardStyles from "./activeCard.styles";
 
-const ActiveCard: React.FC = () => {
-  const { state, drawCard, increaseScore, addToSkipped } =
+const ActiveCard: React.FC<IStackScreenProps> = (props) => {
+  const { navigation } = props;
+  const { state, drawCard, increaseScore, addToSkipped, shuffleSkipped } =
     useContext(GlobalContext);
 
   const isPressed = useSharedValue(false);
@@ -31,22 +32,20 @@ const ActiveCard: React.FC = () => {
     };
   });
 
-  const drawACard = () => {
-    let card: Card = state.deck.shift();
-    drawCard(card);
+  const nextRound = () => {
+    navigation.navigate("scores");
   };
 
-  const resetLocation = () => {
-    "worklet";
-    offset.value = {
-      x: 0,
-      y: 0,
-    };
+  const shuffle = () => {
+    shuffleSkipped();
   };
 
   const gestureHandler = Gesture.Pan()
     .onBegin(() => {
       isPressed.value = true;
+      if (state.deck.length <= 1) {
+        runOnJS(shuffle)();
+      }
     })
     .onUpdate((e) => {
       offset.value = {
@@ -62,15 +61,16 @@ const ActiveCard: React.FC = () => {
           x: 0,
           y: -500,
         };
-        // add card to skip pile
+        // add card to skip pile && draw new card
         runOnJS(addToSkipped)(state.activeCard);
+        console.log(state.skippedPile.length);
       }
       if (offset.value.y > 0) {
         // score
-        // add score to active user
-        // add card to discard pile
+        // add score to active user && add card to discard pile && draw new card
         let score = state.activeCard.point_value * state.roundCount;
         runOnJS(increaseScore)(score, state.activeCard);
+        console.log(state.activePlayer.score);
 
         // animate card to bottom
         offset.value = {
@@ -78,7 +78,6 @@ const ActiveCard: React.FC = () => {
           y: 500,
         };
       }
-      // remove active card
     })
     .onFinalize(() => {
       isPressed.value = false;
@@ -87,12 +86,15 @@ const ActiveCard: React.FC = () => {
         x: 0,
         y: 0,
       };
-      // draw new card
-      runOnJS(drawACard)();
+      // if (state.deck.length === 0 && state.skippedPile.length) {
+      //   // navigate to scores
+      //   runOnJS(nextRound)();
+      // }
     });
 
   useEffect(() => {
-    drawACard();
+    let card = state.deck.shift();
+    drawCard(card!);
   }, []);
 
   return (

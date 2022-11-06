@@ -181,6 +181,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const increaseScore = (points: number, card: Card) => {
+    let newCard = state.deck.shift();
     setState({
       ...state,
       activePlayer: {
@@ -189,12 +190,15 @@ export const GlobalProvider = (props: ProviderProps) => {
         score: state.activePlayer.score + points,
       },
       discardPile: [...state.discardPile, card],
+      activeCard: newCard!,
     });
   };
   const addToSkipped = (card: Card) => {
+    let newCard = state.deck.shift();
     setState({
       ...state,
       skippedPile: [...state.skippedPile, card],
+      activeCard: newCard!,
     });
   };
 

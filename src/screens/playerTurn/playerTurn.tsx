@@ -10,7 +10,7 @@ import ActiveCard from "../../helper/activeCard/activeCard";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   const { state } = useContext(GlobalContext);
-  const { navigation } = props;
+  const { navigation, name, route } = props;
   const [timer, setTimer] = useState(state.turnTime);
 
   // const tickTimer = () => {
@@ -35,7 +35,7 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
       </View>
       <View style={playerTurnStyles.middlePlayArea}>
         <SkipArea />
-        <ActiveCard />
+        <ActiveCard name={name} navigation={navigation} route={route} />
         <DeckArea />
       </View>
       <View style={playerTurnStyles.correctContainer}>
