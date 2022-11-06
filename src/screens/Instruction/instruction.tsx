@@ -10,16 +10,17 @@ import SkipArea from "../../helper/skipArea/skipArea";
 import DeckArea from "../../helper/deck/deck";
 
 import instructionStyles from "./instruction.styles";
+import { Player } from "../../helper/interfaces/interfaces";
 
 const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const {
     state,
     setDeck,
-    setActivePlayer,
+    setTeam1ActivePlayer,
+    setTeam2ActivePlayer,
     increaseRoundCount,
     reshuffleDeck,
-    increaseTurnCounter,
   } = useContext(GlobalContext);
   const [rules, setRules] = useState<string[]>([]);
 
@@ -36,40 +37,34 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
     }
   };
 
+  const teamsShuffle = (team: Player[]) => {
+    let players = shufflePlayers(team);
+    players = shufflePlayers(players);
+    return players;
+  };
+
   useEffect(() => {
-    increaseTurnCounter();
     if (state.turnCounter % 2 === 1) {
       if (state.team1.length === 0) {
-        let players = state.team1HasPlayed;
-        players = shufflePlayers(players);
-        players = shufflePlayers(players);
-        state.team1 = players;
+        let team = teamsShuffle(state.team1HasPlayed);
+        state.team1 = team;
       }
-      state.activePlayer = state.team1[0];
-      state.team1HasPlayed = [...state.team1HasPlayed, state.team1[0]];
-      state.team1.shift();
-      return;
+      setTeam1ActivePlayer();
     }
     if (state.turnCounter % 2 === 0) {
       if (state.team2.length === 0) {
-        let players = state.team2HasPlayed;
-        players = shufflePlayers(players);
-        players = shufflePlayers(players);
-        state.team2 = players;
+        let team = teamsShuffle(state.team2HasPlayed);
+        state.team2 = team;
       }
-      state.activePlayer = state.team2[0];
-      state.team2HasPlayed = [...state.team2HasPlayed, state.team2[0]];
-      state.team2.shift();
-      return;
+      setTeam2ActivePlayer();
     }
-  }, []);
+  }, [state.turnCounter]);
 
   useEffect(() => {
-    if (state.roundCount === 1) {
+    if (state.turnCounter === 1) {
       let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
       getDeck(cardsQuery);
       setRule(state.roundCount);
-      return;
     }
     if (state.roundCount === 2 || state.roundCount === 3) {
       // shuffle has played teams to normal teams again
@@ -78,7 +73,6 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       newDeck = shuffle(newDeck);
       reshuffleDeck(newDeck);
       setRule(state.roundCount);
-      return;
     }
   }, []);
 

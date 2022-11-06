@@ -66,5 +66,5 @@ export const initialState: AppState = {
     name: "",
     score: 0,
   },
-  turnCounter: 0,
+  turnCounter: 1,
 };

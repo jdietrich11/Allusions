@@ -9,7 +9,13 @@ import playerTurnStyles from "./playerTurn.styles";
 import ActiveCard from "../../helper/activeCard/activeCard";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state, shuffleSkipped } = useContext(GlobalContext);
+  const {
+    state,
+    shuffleSkipped,
+    increaseTurnCounter,
+    addTeam1HasPlayed,
+    addTeam2HasPlayed,
+  } = useContext(GlobalContext);
   const { navigation, name, route } = props;
   const [timer, setTimer] = useState(state.turnTime);
 
@@ -20,9 +26,18 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
       }
       if (timer < 1) {
         if (state.deck.length > 0) {
-          // set active player => has played
+          let player = state.activePlayer;
+          // move active player => teamhasplayed
+          if (state.turnCounter % 2 === 1) {
+            addTeam1HasPlayed(player);
+          }
+          if (state.turnCounter % 2 === 0) {
+            addTeam2HasPlayed(player);
+          }
           // increase turn counter
+          increaseTurnCounter();
           // navigate to instruction
+          navigation.navigate("instruction");
         }
       }
     }, 1000);

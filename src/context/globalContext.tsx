@@ -25,12 +25,15 @@ export const GlobalContext = createContext<{
   setTurnTime: (time: number) => void;
   increaseRoundCount: () => void;
   setCardpacks: (cardpacks: Cardpack[]) => void;
-  setActivePlayer: (player: Player) => void;
+  setTeam1ActivePlayer: () => void;
+  setTeam2ActivePlayer: () => void;
   clearTeams: () => void;
   increaseTurnCounter: () => void;
   shuffleSkipped: () => void;
   increaseScore: (points: number, card: Card) => void;
   addToSkipped: (card: Card) => void;
+  addTeam1HasPlayed: (player: Player) => void;
+  addTeam2HasPlayed: (player: Player) => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -47,12 +50,15 @@ export const GlobalContext = createContext<{
   setTurnTime: () => {},
   increaseRoundCount: () => {},
   setCardpacks: () => {},
-  setActivePlayer: () => {},
+  setTeam1ActivePlayer: () => {},
+  setTeam2ActivePlayer: () => {},
   clearTeams: () => {},
   increaseTurnCounter: () => {},
   shuffleSkipped: () => {},
   increaseScore: () => {},
   addToSkipped: () => {},
+  addTeam1HasPlayed: () => {},
+  addTeam2HasPlayed: () => {},
 });
 
 // provider component
@@ -159,10 +165,18 @@ export const GlobalProvider = (props: ProviderProps) => {
       cardpacks: cardpacks,
     });
   };
-  const setActivePlayer = (player: Player) => {
+  const setTeam1ActivePlayer = () => {
+    let player = state.team1.shift();
     setState({
       ...state,
-      activePlayer: player,
+      activePlayer: player!,
+    });
+  };
+  const setTeam2ActivePlayer = () => {
+    let player = state.team2.shift();
+    setState({
+      ...state,
+      activePlayer: player!,
     });
   };
   const increaseTurnCounter = () => {
@@ -201,6 +215,18 @@ export const GlobalProvider = (props: ProviderProps) => {
       activeCard: newCard!,
     });
   };
+  const addTeam1HasPlayed = (player: Player) => {
+    setState({
+      ...state,
+      team1HasPlayed: [...state.team1HasPlayed, player],
+    });
+  };
+  const addTeam2HasPlayed = (player: Player) => {
+    setState({
+      ...state,
+      team2HasPlayed: [...state.team2HasPlayed, player],
+    });
+  };
 
   const value = {
     state,
@@ -218,12 +244,15 @@ export const GlobalProvider = (props: ProviderProps) => {
     setTurnTime,
     increaseRoundCount,
     setCardpacks,
-    setActivePlayer,
+    setTeam1ActivePlayer,
+    setTeam2ActivePlayer,
     clearTeams,
     increaseTurnCounter,
     shuffleSkipped,
     increaseScore,
     addToSkipped,
+    addTeam1HasPlayed,
+    addTeam2HasPlayed,
   };
 
   return (
