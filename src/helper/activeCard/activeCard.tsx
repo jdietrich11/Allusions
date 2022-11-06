@@ -14,7 +14,8 @@ import { Card } from "../interfaces/interfaces";
 import activeCardStyles from "./activeCard.styles";
 
 const ActiveCard: React.FC = () => {
-  const { state, drawCard, increaseScore } = useContext(GlobalContext);
+  const { state, drawCard, increaseScore, addToSkipped } =
+    useContext(GlobalContext);
 
   const isPressed = useSharedValue(false);
   const start = useSharedValue({ x: 0, y: 0 });
@@ -29,6 +30,11 @@ const ActiveCard: React.FC = () => {
       backgroundColor: isPressed.value ? "yellow" : "blue",
     };
   });
+
+  const drawACard = () => {
+    let card: Card = state.deck.shift();
+    drawCard(card);
+  };
 
   const resetLocation = () => {
     "worklet";
@@ -51,44 +57,39 @@ const ActiveCard: React.FC = () => {
     .onEnd(() => {
       if (offset.value.y < 0) {
         // skip
-        state.skippedPile = [...state.skippedPile, state.activeCard];
         // animate card to top
         offset.value = {
           x: 0,
           y: -500,
         };
         // add card to skip pile
+        runOnJS(addToSkipped)(state.activeCard);
       }
       if (offset.value.y > 0) {
-        ("runOnJS");
         // score
         // add score to active user
-        let cardPoints = state.activeCard.point_value * state.roundCount;
-        runOnJS(increaseScore)(cardPoints);
+        // add card to discard pile
+        let score = state.activeCard.point_value * state.roundCount;
+        runOnJS(increaseScore)(score, state.activeCard);
+
         // animate card to bottom
         offset.value = {
           x: 0,
           y: 500,
         };
-
-        // add card to discard pile
       }
       // remove active card
     })
     .onFinalize(() => {
+      isPressed.value = false;
       // reset location
-      resetLocation();
-
+      offset.value = {
+        x: 0,
+        y: 0,
+      };
       // draw new card
       runOnJS(drawACard)();
-      isPressed.value = false;
-      console.log(state.deck.length);
     });
-
-  const drawACard = () => {
-    let card: Card = state.deck.shift();
-    drawCard(card);
-  };
 
   useEffect(() => {
     drawACard();

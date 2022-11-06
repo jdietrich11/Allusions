@@ -29,7 +29,8 @@ export const GlobalContext = createContext<{
   clearTeams: () => void;
   increaseTurnCounter: () => void;
   shuffleSkipped: () => void;
-  increaseScore: (points: number) => void;
+  increaseScore: (points: number, card: Card) => void;
+  addToSkipped: (card: Card) => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -51,6 +52,7 @@ export const GlobalContext = createContext<{
   increaseTurnCounter: () => {},
   shuffleSkipped: () => {},
   increaseScore: () => {},
+  addToSkipped: () => {},
 });
 
 // provider component
@@ -178,7 +180,7 @@ export const GlobalProvider = (props: ProviderProps) => {
       deck: tempDeck,
     });
   };
-  const increaseScore = (points: number) => {
+  const increaseScore = (points: number, card: Card) => {
     setState({
       ...state,
       activePlayer: {
@@ -186,6 +188,13 @@ export const GlobalProvider = (props: ProviderProps) => {
         name: state.activePlayer.name,
         score: state.activePlayer.score + points,
       },
+      discardPile: [...state.discardPile, card],
+    });
+  };
+  const addToSkipped = (card: Card) => {
+    setState({
+      ...state,
+      skippedPile: [...state.skippedPile, card],
     });
   };
 
@@ -210,6 +219,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     increaseTurnCounter,
     shuffleSkipped,
     increaseScore,
+    addToSkipped,
   };
 
   return (
