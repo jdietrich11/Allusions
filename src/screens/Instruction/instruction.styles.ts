@@ -65,13 +65,6 @@ const instructionStyles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
   },
-  playerNameContainer: {
-    marginTop: 12,
-  },
-  playerName: {
-    fontSize: 42,
-    textAlign: "center",
-  },
   readyButton: {
     marginTop: "auto",
     marginBottom: 12,

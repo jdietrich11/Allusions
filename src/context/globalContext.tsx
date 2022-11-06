@@ -34,6 +34,8 @@ export const GlobalContext = createContext<{
   addToSkipped: (card: Card) => void;
   addTeam1HasPlayed: (player: Player) => void;
   addTeam2HasPlayed: (player: Player) => void;
+  shuffleTeam1: (team: Player[]) => void;
+  shuffleTeam2: (team: Player[]) => void;
 }>({
   state: initialState,
   setDeck: () => {},
@@ -59,6 +61,8 @@ export const GlobalContext = createContext<{
   addToSkipped: () => {},
   addTeam1HasPlayed: () => {},
   addTeam2HasPlayed: () => {},
+  shuffleTeam1: () => {},
+  shuffleTeam2: () => {},
 });
 
 // provider component
@@ -227,6 +231,18 @@ export const GlobalProvider = (props: ProviderProps) => {
       team2HasPlayed: [...state.team2HasPlayed, player],
     });
   };
+  const shuffleTeam1 = (team: Player[]) => {
+    setState({
+      ...state,
+      team1: team,
+    });
+  };
+  const shuffleTeam2 = (team: Player[]) => {
+    setState({
+      ...state,
+      team2: team,
+    });
+  };
 
   const value = {
     state,
@@ -253,6 +269,8 @@ export const GlobalProvider = (props: ProviderProps) => {
     addToSkipped,
     addTeam1HasPlayed,
     addTeam2HasPlayed,
+    shuffleTeam1,
+    shuffleTeam2,
   };
 
   return (
