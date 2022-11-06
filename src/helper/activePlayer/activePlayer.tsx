@@ -40,7 +40,7 @@ const ActivePlayer: React.FC<IStackScreenProps> = (props) => {
       }
       setTeam2ActivePlayer();
     }
-  }, [route]);
+  }, [state.turnCounter]);
 
   return (
     <View style={activePlayerStyles.playerNameContainer}>
