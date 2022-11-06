@@ -9,12 +9,10 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { GlobalContext } from "../../context/globalContext";
-import { IStackScreenProps } from "../../library/StackScreenProps";
 
 import activeCardStyles from "./activeCard.styles";
 
-const ActiveCard: React.FC<IStackScreenProps> = (props) => {
-  const { navigation } = props;
+const ActiveCard: React.FC = () => {
   const { state, drawCard, increaseScore, addToSkipped, shuffleSkipped } =
     useContext(GlobalContext);
 
@@ -31,10 +29,6 @@ const ActiveCard: React.FC<IStackScreenProps> = (props) => {
       backgroundColor: isPressed.value ? "yellow" : "blue",
     };
   });
-
-  const nextRound = () => {
-    navigation.navigate("scores");
-  };
 
   const shuffle = () => {
     shuffleSkipped();
@@ -63,14 +57,12 @@ const ActiveCard: React.FC<IStackScreenProps> = (props) => {
         };
         // add card to skip pile && draw new card
         runOnJS(addToSkipped)(state.activeCard);
-        console.log(state.skippedPile.length);
       }
       if (offset.value.y > 0) {
         // score
         // add score to active user && add card to discard pile && draw new card
         let score = state.activeCard.point_value * state.roundCount;
         runOnJS(increaseScore)(score, state.activeCard);
-        console.log(state.activePlayer.score);
 
         // animate card to bottom
         offset.value = {
@@ -86,10 +78,6 @@ const ActiveCard: React.FC<IStackScreenProps> = (props) => {
         x: 0,
         y: 0,
       };
-      // if (state.deck.length === 0 && state.skippedPile.length) {
-      //   // navigate to scores
-      //   runOnJS(nextRound)();
-      // }
     });
 
   useEffect(() => {

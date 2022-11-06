@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text } from "react-native";
 
 import { GlobalContext } from "../../context/globalContext";
@@ -9,24 +9,39 @@ import playerTurnStyles from "./playerTurn.styles";
 import ActiveCard from "../../helper/activeCard/activeCard";
 
 const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
-  const { state } = useContext(GlobalContext);
+  const { state, shuffleSkipped } = useContext(GlobalContext);
   const { navigation, name, route } = props;
   const [timer, setTimer] = useState(state.turnTime);
 
-  // const tickTimer = () => {
-  //   setTimeout(() => {
-  //     if (timer > 0) {
-  //       setTimer(timer - 1);
-  //     }
-  //     if (timer < 1) {
-  //       navigation.navigate("scores");
-  //     }
-  //   }, 1000);
-  // };
+  const tickTimer = () => {
+    setTimeout(() => {
+      if (timer > 0) {
+        setTimer(timer - 1);
+      }
+      if (timer < 1) {
+        if (state.deck.length > 0) {
+          // set active player => has played
+          // increase turn counter
+          // navigate to instruction
+        }
+      }
+    }, 1000);
+  };
 
-  // useEffect(() => {
-  //   tickTimer();
-  // }, [timer]);
+  useEffect(() => {
+    tickTimer();
+  }, [timer]);
+
+  useEffect(() => {
+    if (state.deck.length < 2 && state.skippedPile.length > 0) {
+      shuffleSkipped();
+      return;
+    }
+    if (state.deck.length < 1 && state.skippedPile.length < 1) {
+      navigation.navigate("scores");
+      return;
+    }
+  }, [state.deck.length]);
 
   return (
     <View style={playerTurnStyles.playerTurnPageContainer}>
@@ -35,7 +50,7 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
       </View>
       <View style={playerTurnStyles.middlePlayArea}>
         <SkipArea />
-        <ActiveCard name={name} navigation={navigation} route={route} />
+        <ActiveCard />
         <DeckArea />
       </View>
       <View style={playerTurnStyles.correctContainer}>
