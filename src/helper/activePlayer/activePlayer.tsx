@@ -25,7 +25,6 @@ const ActivePlayer: React.FC<IStackScreenProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log("test if ran");
     if (state.turnCounter % 2 === 1) {
       if (state.team1.length === 0) {
         let team = teamsShuffle(state.team1HasPlayed);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { GlobalContext } from "../../context/globalContext";
 import { IStackScreenProps } from "../../library/StackScreenProps";
 
@@ -7,22 +7,24 @@ import scoreScreenStyles from "./scores.styles";
 
 const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
-  const { state, increaseRoundCount } = useContext(GlobalContext);
+  const { state, increaseRoundCount, reshuffleDeck } =
+    useContext(GlobalContext);
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log(state.roundCount);
-      if (state.roundCount === 1 || state.roundCount === 2) {
-        increaseRoundCount();
-        navigation.navigate("instruction");
-        return;
-      }
-      if (state.roundCount === 3) {
-        navigation.navigate("endGame");
-        return;
-      }
-    }, 3000);
-  }, []);
+  const nextScreen = () => {
+    if (state.roundCount === 1 || state.roundCount === 2) {
+      // reshuffle cards
+      let newDeck = state.discardPile;
+      reshuffleDeck(newDeck);
+
+      // increaseRoundCount();
+      navigation.navigate("instruction");
+      return;
+    }
+    if (state.roundCount === 3) {
+      navigation.navigate("endGame");
+      return;
+    }
+  };
 
   return (
     <View style={scoreScreenStyles.scoreScreenContainer}>
@@ -36,11 +38,23 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
           <Text style={scoreScreenStyles.teamTitle}>Team 1</Text>
           <Text style={scoreScreenStyles.teamScore}>22</Text>
           <Text style={scoreScreenStyles.teamMVP}>{"MVP: " + "James"}</Text>
+          {state.team1.map((teamMemeber) => (
+            <View>
+              <Text>{teamMemeber.name}</Text>
+              <Text>{teamMemeber.score}</Text>
+            </View>
+          ))}
         </View>
         <View style={scoreScreenStyles.teamContainer}>
           <Text style={scoreScreenStyles.teamTitle}>Team 2</Text>
           <Text style={scoreScreenStyles.teamScore}>32</Text>
           <Text style={scoreScreenStyles.teamMVP}>{"MVP: " + "Sarah"}</Text>
+          {state.team1.map((teamMemeber) => (
+            <View>
+              <Text>{teamMemeber.name}</Text>
+              <Text>{teamMemeber.score}</Text>
+            </View>
+          ))}
         </View>
       </View>
       <View style={scoreScreenStyles.winsTitleContainer}>
@@ -58,6 +72,9 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
           </Text>
         </View>
       </View>
+      <Pressable onPress={nextScreen} style={scoreScreenStyles.nextScreenBtn}>
+        <Text style={scoreScreenStyles.nextScreenBtnText}>Next</Text>
+      </Pressable>
     </View>
   );
 };

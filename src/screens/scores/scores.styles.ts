@@ -65,6 +65,15 @@ const scoreScreenStyles = StyleSheet.create({
     textAlign: "center",
     fontSize: 32,
   },
+  nextScreenBtn: {
+    flex: 0.55,
+    borderWidth: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  nextScreenBtnText: {
+    fontSize: 32,
+  },
 });
 
 export default scoreScreenStyles;

@@ -170,16 +170,18 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const setTeam1ActivePlayer = () => {
-    let player = state.team1.shift();
+    let player = state.team1[0];
     setState({
       ...state,
+      team1: state.team1.filter((teamMember) => teamMember.id !== player.id),
       activePlayer: player!,
     });
   };
   const setTeam2ActivePlayer = () => {
-    let player = state.team2.shift();
+    let player = state.team2[0];
     setState({
       ...state,
+      team2: state.team2.filter((teamMember) => teamMember.id !== player.id),
       activePlayer: player!,
     });
   };
@@ -220,6 +222,7 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const addTeam1HasPlayed = (player: Player) => {
+    console.log(player);
     setState({
       ...state,
       team1HasPlayed: [...state.team1HasPlayed, player],
