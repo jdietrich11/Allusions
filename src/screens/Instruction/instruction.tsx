@@ -91,7 +91,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
       <View style={instructionStyles.scoreContainer}>
         <Text style={instructionStyles.scoreText}>drag to score</Text>
       </View>
-      <Pressable onPress={() => console.log(state.team1Score)}>
+      <Pressable onPress={() => navigation.navigate("scores")}>
         <Text>TeamHasPlayed</Text>
       </Pressable>
     </View>

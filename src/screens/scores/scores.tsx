@@ -36,23 +36,37 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
       <View style={scoreScreenStyles.teamsContainer}>
         <View style={scoreScreenStyles.teamContainer}>
           <Text style={scoreScreenStyles.teamTitle}>Team 1</Text>
-          <Text style={scoreScreenStyles.teamScore}>22</Text>
+          <Text style={scoreScreenStyles.teamScore}>{state.team1Score}</Text>
           <Text style={scoreScreenStyles.teamMVP}>{"MVP: " + "James"}</Text>
-          {state.team1.map((teamMemeber) => (
-            <View>
-              <Text>{teamMemeber.name}</Text>
-              <Text>{teamMemeber.score}</Text>
+          {state.team1.map((teamMember) => (
+            <View
+              key={teamMember.id}
+              style={scoreScreenStyles.teamMemberContainer}
+            >
+              <Text style={scoreScreenStyles.teamMemberName}>
+                {teamMember.name}
+              </Text>
+              <Text style={scoreScreenStyles.teamMemberScore}>
+                {teamMember.score}
+              </Text>
             </View>
           ))}
         </View>
         <View style={scoreScreenStyles.teamContainer}>
           <Text style={scoreScreenStyles.teamTitle}>Team 2</Text>
-          <Text style={scoreScreenStyles.teamScore}>32</Text>
+          <Text style={scoreScreenStyles.teamScore}>{state.team2Score}</Text>
           <Text style={scoreScreenStyles.teamMVP}>{"MVP: " + "Sarah"}</Text>
-          {state.team1.map((teamMemeber) => (
-            <View>
-              <Text>{teamMemeber.name}</Text>
-              <Text>{teamMemeber.score}</Text>
+          {state.team2.map((teamMember) => (
+            <View
+              key={teamMember.id}
+              style={scoreScreenStyles.teamMemberContainer}
+            >
+              <Text style={scoreScreenStyles.teamMemberName}>
+                {teamMember.name}
+              </Text>
+              <Text style={scoreScreenStyles.teamMemberScore}>
+                {teamMember.score}
+              </Text>
             </View>
           ))}
         </View>

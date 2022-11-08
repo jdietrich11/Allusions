@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { initialState, AppState } from "./initialState";
 import { Card, Player, Cardpack } from "../helper/interfaces/interfaces";
 import { shuffle } from "../helper/shuffle/shuffle";
+import playerTurnStyles from "../screens/playerTurn/playerTurn.styles";
 
 export interface ProviderProps {
   children: React.ReactNode;
@@ -188,16 +189,32 @@ export const GlobalProvider = (props: ProviderProps) => {
   };
   const increaseScore = (points: number, card: Card) => {
     let newCard = state.deck.shift();
-    setState({
-      ...state,
-      activePlayer: {
-        id: state.activePlayer.id,
-        name: state.activePlayer.name,
-        score: state.activePlayer.score + points,
-      },
-      discardPile: [...state.discardPile, card],
-      activeCard: newCard!,
-    });
+    if (state.turnCounter % 2 === 1) {
+      setState({
+        ...state,
+        team1Score: state.team1Score + points,
+        activePlayer: {
+          id: state.activePlayer.id,
+          name: state.activePlayer.name,
+          score: state.activePlayer.score + points,
+        },
+        discardPile: [...state.discardPile, card],
+        activeCard: newCard!,
+      });
+    }
+    if (state.turnCounter % 2 === 0) {
+      setState({
+        ...state,
+        team2Score: state.team2Score + points,
+        activePlayer: {
+          id: state.activePlayer.id,
+          name: state.activePlayer.name,
+          score: state.activePlayer.score + points,
+        },
+        discardPile: [...state.discardPile, card],
+        activeCard: newCard!,
+      });
+    }
   };
   const addToSkipped = (card: Card) => {
     let newCard = state.deck.shift();
@@ -208,18 +225,15 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const addTeam1HasPlayed = (player: Player) => {
-    const { score } = player;
-    let points = state.team1Score + score;
+    console.log(player);
     setState({
       ...state,
-      team1Score: points,
       team1HasPlayed: [...state.team1HasPlayed, player],
     });
   };
   const addTeam2HasPlayed = (player: Player) => {
     setState({
       ...state,
-      team2Score: +state.team2Score + player.score,
       team2HasPlayed: [...state.team2HasPlayed, player],
     });
   };

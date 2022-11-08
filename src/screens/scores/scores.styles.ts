@@ -74,6 +74,19 @@ const scoreScreenStyles = StyleSheet.create({
   nextScreenBtnText: {
     fontSize: 32,
   },
+  teamMemberContainer: {
+    marginTop: 12,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  teamMemberName: {
+    marginRight: 6,
+    fontSize: 22,
+  },
+  teamMemberScore: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
 });
 
 export default scoreScreenStyles;
