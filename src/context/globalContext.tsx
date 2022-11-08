@@ -20,7 +20,6 @@ export const GlobalContext = createContext<{
   decreaseCardCount: () => void;
   reshuffleDeck: (newDeck: Card[]) => void;
   drawCard: (card: Card) => void;
-  guessedCorrect: (points: number, card: Card) => void;
   setTurnTime: (time: number) => void;
   increaseRoundCount: () => void;
   setCardpacks: (cardpacks: Cardpack[]) => void;
@@ -47,7 +46,6 @@ export const GlobalContext = createContext<{
   decreaseCardCount: () => {},
   reshuffleDeck: () => {},
   drawCard: () => {},
-  guessedCorrect: () => {},
   setTurnTime: () => {},
   increaseRoundCount: () => {},
   setCardpacks: () => {},
@@ -139,17 +137,6 @@ export const GlobalProvider = (props: ProviderProps) => {
       activeCard: card,
     });
   };
-  const guessedCorrect = (points: number, card: Card) => {
-    setState({
-      ...state,
-      activePlayer: {
-        id: state.activePlayer.id,
-        name: state.activePlayer.name,
-        score: state.activePlayer.score + points,
-      },
-      discardPile: [...state.discardPile, card],
-    });
-  };
   const setTurnTime = (time: number) => {
     setState({
       ...state,
@@ -221,14 +208,18 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const addTeam1HasPlayed = (player: Player) => {
+    const { score } = player;
+    let points = state.team1Score + score;
     setState({
       ...state,
+      team1Score: points,
       team1HasPlayed: [...state.team1HasPlayed, player],
     });
   };
   const addTeam2HasPlayed = (player: Player) => {
     setState({
       ...state,
+      team2Score: +state.team2Score + player.score,
       team2HasPlayed: [...state.team2HasPlayed, player],
     });
   };
@@ -257,7 +248,6 @@ export const GlobalProvider = (props: ProviderProps) => {
     decreaseCardCount,
     reshuffleDeck,
     drawCard,
-    guessedCorrect,
     setTurnTime,
     increaseRoundCount,
     setCardpacks,
