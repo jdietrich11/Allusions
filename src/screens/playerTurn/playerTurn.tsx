@@ -19,17 +19,13 @@ const PlayerTurnScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation, name, route } = props;
   const [timer, setTimer] = useState(state.turnTime);
 
-  const endTurn = () => {
+  const endTurn = async () => {
     let player = state.activePlayer;
     if (state.turnCounter % 2 === 1) {
       addTeam1HasPlayed(player);
-      console.log(state.team1HasPlayed);
-      return;
     }
     if (state.turnCounter % 2 === 0) {
-      console.log(2);
       addTeam2HasPlayed(player);
-      return;
     }
   };
 

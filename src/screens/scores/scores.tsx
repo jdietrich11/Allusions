@@ -9,6 +9,8 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
   const { navigation } = props;
   const { state, increaseRoundCount, reshuffleDeck } =
     useContext(GlobalContext);
+  const [team1Score, setTeam1Score] = useState(0);
+  const [team2Score, setTeam2Score] = useState(0);
 
   const nextScreen = () => {
     if (state.roundCount === 1 || state.roundCount === 2) {

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState } from "react";
 import { initialState, AppState } from "./initialState";
 import { Card, Player, Cardpack } from "../helper/interfaces/interfaces";
 import { shuffle } from "../helper/shuffle/shuffle";
-import { ActionSheetIOS } from "react-native";
 
 export interface ProviderProps {
   children: React.ReactNode;
@@ -222,7 +221,6 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const addTeam1HasPlayed = (player: Player) => {
-    console.log(player);
     setState({
       ...state,
       team1HasPlayed: [...state.team1HasPlayed, player],

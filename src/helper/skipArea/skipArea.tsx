@@ -6,7 +6,7 @@ import skipStyles from "./skipArea.styles";
 const SkipArea: React.FC = () => {
   return (
     <View style={skipStyles.skipContainer}>
-      <Text style={skipStyles.skipText}>skip</Text>
+      <Text style={skipStyles.skipText}>^^skip</Text>
     </View>
   );
 };
