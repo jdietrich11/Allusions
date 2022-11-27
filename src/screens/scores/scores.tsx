@@ -16,7 +16,7 @@ const ScoreScreen: React.FC<IStackScreenProps> = (props) => {
       let newDeck = state.discardPile;
       reshuffleDeck(newDeck);
 
-      // increaseRoundCount();
+      increaseRoundCount();
       navigation.navigate("instruction");
       return;
     }

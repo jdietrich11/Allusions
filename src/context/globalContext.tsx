@@ -225,7 +225,6 @@ export const GlobalProvider = (props: ProviderProps) => {
     });
   };
   const addTeam1HasPlayed = (player: Player) => {
-    console.log(player);
     setState({
       ...state,
       team1HasPlayed: [...state.team1HasPlayed, player],
