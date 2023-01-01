@@ -72,3 +72,12 @@ after every round
 button
 // do you want to limit the amount of cards a person can go through on their turns?
 no limit
+
+
+
+post break
+
+round end (scores page) show players and scores for each team. show MVP. count correctly round wins. 
+add more data to db.
+scores page next button -> reshuffle deck, reset players (verify), upate round counter, show round 2 rules (verify).
+styling is horrible FIX!.
