@@ -20,7 +20,8 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
   const getDeck = async (query: string) => {
     try {
       let cards = await apiCall(query);
-      let { card } = cards.data;
+      let card = cards.data.cards;
+      console.log(card);
       let newDeck = await shuffle(card);
       newDeck = shuffle(newDeck);
       newDeck = newDeck.slice(0, state.cardCount);
@@ -32,7 +33,7 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
 
   useEffect(() => {
     if (state.turnCounter === 1) {
-      let cardsQuery = `card (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
+      let cardsQuery = `cards (where: {cardpack_id : {_in: [${state.selectedCardpacks}]}}) { id card_name card_hint point_value image_url}`;
       getDeck(cardsQuery);
       setRule(state.roundCount);
     }

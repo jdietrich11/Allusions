@@ -27,15 +27,7 @@ const CardpackSelectScreen: React.FC<IStackScreenProps> = (props) => {
   const [cardpacks, setCardpacks] = useState<Cardpack[]>([]);
 
   useEffect(() => {
-    let packs: Cardpack[] = [];
-    let id = [1, 2, 3];
-    for (let i = 0; i < id.length; i++) {
-      let pack = state.cardpacks.filter(
-        (cardpack: Cardpack) => cardpack.id === id[i]
-      );
-      packs = [...packs, pack[0]];
-    }
-    setCardpacks(packs);
+    setCardpacks(state.cardpacks);
   }, []);
 
   const changeSelected = (id: any) => {
