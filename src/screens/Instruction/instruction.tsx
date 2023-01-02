@@ -21,7 +21,6 @@ const InstructionScreen: React.FC<IStackScreenProps> = (props) => {
     try {
       let cards = await apiCall(query);
       let card = cards.data.cards;
-      console.log(card);
       let newDeck = await shuffle(card);
       newDeck = shuffle(newDeck);
       newDeck = newDeck.slice(0, state.cardCount);
